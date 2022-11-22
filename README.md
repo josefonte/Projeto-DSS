@@ -1,6 +1,4 @@
-# Projeto-DSS
-
-Grupo 08
+# Projeto-DSS Grupo 08
 
 a97040 Inês Nogueira Ferreira
 
