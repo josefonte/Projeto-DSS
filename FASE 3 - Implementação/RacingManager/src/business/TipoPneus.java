@@ -1,3 +1,3 @@
 package business;
 
-public enum TipoPneus {MACIO, DURO};
+public enum TipoPneus {MACIO, DURO,CHUVA};
