@@ -10,7 +10,19 @@ public class Participante {
     public int afinacoesRestantes;
     public int voltasTotais;
     public int localizacaoPista;
+
+    public Carro carro;
     public Utilizador utilizador;
+
+    public Participante(Participante u){
+        this.setPontuacao(u.getPontuacao());
+        this.setTempos(u.getTempos());
+        this.setAfinacoesRestantes(u.getAfinacoesRestantes());
+        this.setVoltasTotais(u.getVoltasTotais());
+        this.setLocalizacaoPista(u.getLocalizacaoPista());
+        this.setCarro(u.getCarro());
+        this.setUtilizador(u.getUtilizador());
+    }
 
     public int getPontuacao() {
         return this.pontuacao;
@@ -43,6 +55,14 @@ public class Participante {
         return voltasTotais;
     }
 
+    public Carro getCarro() {
+        return this.carro.clone();
+    }
+
+    public void setCarro(Carro carro) {
+        this.carro = carro.clone();
+    }
+
     public void setVoltasTotais(int voltasTotais) {
         this.voltasTotais = voltasTotais;
     }
@@ -59,6 +79,10 @@ public class Participante {
         return this.utilizador.clone();
     }
 
+    public void setUtilizador(Utilizador u){
+        this.utilizador = u.clone();
+    }
+
     public void addTempo(LocalTime tempo){
         List<LocalTime> res = this.getTempos();
         res.add(tempo);
@@ -72,5 +96,9 @@ public class Participante {
 
     public String getNome(){
         return this.getUtilizador().getNomeUtilizador();
+    }
+
+    public Participante clone(){
+        return new Participante(this);
     }
 }
