@@ -47,4 +47,9 @@ public class Circuito {
             else s.setDistancia((float) (distTotal * 0.6 / chicane));
         }
     }
+    
+    public List<Float> constroiCircuito(){
+        calculaSegmentos();
+        return segmentosdepista.stream().map((s)->s.getDistancia()).collect(Collectors.toList());
+    }
 }
