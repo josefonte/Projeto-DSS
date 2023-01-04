@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class TextUI {
     // O model tem a 'lógica de negócio'.
-    private IClienteFacade model;
+    private ISimularFacade model;
 
     // Menus da aplicação
     private Menu menu;
@@ -23,6 +23,7 @@ public class TextUI {
     public TextUI() {
         // Criar o menu
         //METER AQUI O QUE SE DEVIA FAZER
+        /*
         this.menu = new Menu(new String[]{
                 "Adicionar Aluno",
                 "Consultar Aluno",
@@ -52,6 +53,8 @@ public class TextUI {
 
         this.model = new TurmasFacade();
         scin = new Scanner(System.in);
+
+         */
     }
 
     /**
@@ -64,6 +67,7 @@ public class TextUI {
 
     // Métodos auxiliares
     private void trataAdicionarAluno() {
+        /*
         try {
             System.out.println("Número da novo aluno: ");
             String num = scin.nextLine();
@@ -259,6 +263,7 @@ public class TextUI {
         catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
+        */
     }
 
 }
