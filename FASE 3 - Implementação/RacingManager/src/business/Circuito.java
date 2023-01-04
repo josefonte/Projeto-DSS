@@ -33,6 +33,17 @@ public class Circuito {
     public void addSegmentoDePista(SegmentoDePista s){
         segmentosdepista.add(s.clone());
     }
+    public List<SegmentoDePista> getSegmentosdepista() {
+        List<SegmentoDePista> seg = new ArrayList<>();
+
+        for(SegmentoDePista s: this.segmentosdepista){
+            seg.add(s);
+        }
+        return seg;
+    }
+    public void setSegmentosdepista(List<SegmentoDePista> segmentosdepista) {
+        this.segmentosdepista = segmentosdepista;
+    }
     public void calculaSegmentos(){
         int reta = 0, curva = 0, chicane = 0;
         float distTotal = getDistancia();
