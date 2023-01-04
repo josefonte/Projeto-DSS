@@ -14,6 +14,11 @@ public class Circuito {
         this.nomeCircuito = nomeCircuito;
         this.segmentosdepista = segmentos.stream().map((s)->s.clone()).collect(Collectors.toList());
     }
+    public Circuito(Circuito c) {
+        this.distancia = c.getDistancia();
+        this.nomeCircuito = c.getNomeCircuito();
+        this.segmentosdepista = c.getSegmentosdepista();
+    }
 
     public float getDistancia() {
         return distancia;
