@@ -118,7 +118,7 @@ public class CircuitoDAO implements Map<String,Circuito>{
                     "INSERT INTO circuitos " +
                             "VALUES ('"+ value.getNomeCircuito()+ "', "+
                             value.getDistancia()+") "+
-                            "ON DUPLICATE KEY UPDATE distancia=Values(distancia)");                            "Voltas=Values(Voltas)");
+                            "ON DUPLICATE KEY UPDATE distancia=Values(distancia)");
 
             // Actualizar os segmentos do circuito
             //Eliminar segmentos cujo nome do circuito corresponde
