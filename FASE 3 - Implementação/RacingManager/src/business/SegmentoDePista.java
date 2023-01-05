@@ -1,12 +1,11 @@
 package business;
-
 public class SegmentoDePista {
     private int gdu;
     private float distancia;
     private TipoSegmento nome;
 
 
-    public SegmentoDePista(int gdu, int distancia, TipoSegmento nome) {
+    public SegmentoDePista(int gdu, float distancia, TipoSegmento nome) {
         this.distancia = distancia;
         this.gdu = gdu;
         this.nome = nome;

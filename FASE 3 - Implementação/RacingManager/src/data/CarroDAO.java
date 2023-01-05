@@ -18,8 +18,8 @@ public class CarroDAO implements Map<String, Carro> {
                     "potencia int NOT NULL," +
                     "fiabilidade float DEFAULT NULL," +
                     "pac int NOT NULL," +
-                    "TipoPneus ENUM ('Duro','Macio','Chuva)," +
-                    "ModoMotor ENUM('Conversador','Normal', 'Agressivo'," +
+                    "TipoPneus ENUM ('Duro','Macio','Chuva')," +
+                    "ModoMotor ENUM('Conversador','Normal', 'Agressivo')," +
                     "potenciaHibrido int DEFAULT NULL," +
                     "taxaDeteorizacao int DEFAULT NULL)";
             stm.executeUpdate(sql);
