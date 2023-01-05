@@ -14,8 +14,7 @@ public class PilotoDAO implements Map<String, Piloto> {
             String sql = "CREATE TABLE IF NOT EXISTS Piloto (" +
                     "nome varchar(45) NOT NULL PRIMARY KEY," +
                     "sva int NOT NULL,"+
-                    "cts int NOT NULL," +
-                    "celindrada int DEFAULT NULL)";
+                    "cts int NOT NULL)";
             stm.executeUpdate(sql);
         } catch (SQLException e) {
             // Erro a criar tabela...
@@ -125,6 +124,7 @@ public class PilotoDAO implements Map<String, Piloto> {
              Statement stm = conn.createStatement()) {
             // apagar a turma
             stm.executeUpdate("DELETE FROM pilotos WHERE nome='" + p.getNome() + "'");
+            stm.executeUpdate("DETE FROM participantes where piloto_nome='"+p.getNome()+"'");
 
         }catch (Exception e) {
             // Database error!
@@ -143,6 +143,7 @@ public class PilotoDAO implements Map<String, Piloto> {
     public void clear() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
+            for(Piloto p: this.values()) stm.executeUpdate("TRUNCATE participantes WHERE piloto_nome='"+p.getNome()+"'");
             stm.executeUpdate("TRUNCATE pilotos");
         } catch (SQLException e) {
             // Database error!
