@@ -3,7 +3,7 @@ public class C1 extends Carro {
     private int potenciaHibrida;
 
     public C1() {
-        super("C1", "", 6000, 0, 0, 0, 0, "");
+        super("C1", "", "", "6000", 0, 0, 0, "");
 
         this.potenciaHibrida = 0;
     }

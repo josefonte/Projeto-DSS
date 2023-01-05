@@ -3,7 +3,7 @@ package business;
 public class SC extends Carro{
 
     public SC() {
-        super("SC","", "", 2500, 0, 0, 0, 0);
+        super("SC","", "", 2500, 0, 0, 0, "0");
     }
 
     public SC(String marca, String modelo, int celindrada, int potencia, float fiabilidade, int pac, String id) {

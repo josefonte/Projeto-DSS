@@ -3,7 +3,7 @@ package business;
 public class C2 extends Carro{
 
     public C2() {
-        super("C2","", "", 3000, 0, 0, 0, 0);
+        super("C2","", "", 3000, 0, 0, 0, "0");
         this.potenciaHibrida = 0;
     }
     private int potenciaHibrida;

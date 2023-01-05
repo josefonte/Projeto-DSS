@@ -12,14 +12,14 @@ public abstract class Carro {
     private String categoria;
 
     public Carro() {
-        this.categoria = ""
+        this.categoria = "";
         this.marca = "";
         this.modelo = "";
         this.celindrada = 0;
         this.potencia = 0;
         this.fiabilidade = 0;
         this.pac = 0;
-        this.id = 0;
+        this.id = "0";
     }
 
     public Carro(String categoria,String marca, String modelo, int celindrada, int potencia, float fiabilidade, int pac, String id) {
@@ -34,7 +34,7 @@ public abstract class Carro {
     }
 
     public Carro(Carro c) {
-        this.categoria = c.getCategoria()
+        this.categoria = c.getCategoria();
         this.marca = c.getMarca();
         this.modelo = c.getModelo();
         this.celindrada = c.getCelindrada();
@@ -128,7 +128,7 @@ public abstract class Carro {
     public void alteraafinacao(int pac, ModoMotor motor){
         setPac(pac);
         setMotor(motor);
-    };
+    }
 
     @Override
     public String toString() {

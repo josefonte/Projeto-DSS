@@ -5,7 +5,7 @@ public class GT extends Carro{
     int taxaDeteorizacao;
 
     public GT() {
-        super("GT","", "", 2000, 0, 0, 0, 0);
+        super("GT","", "", 2000, 0, 0, 0, "0");
         this.potenciaHibrida = 0;
         this.taxaDeteorizacao = 0;
     }
