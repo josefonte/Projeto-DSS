@@ -14,6 +14,7 @@ public class Circuito {
         this.nomeCircuito = nomeCircuito;
         this.segmentosdepista = segmentos.stream().map((s)->s.clone()).collect(Collectors.toList());
     }
+
     public Circuito(Circuito c) {
         this.distancia = c.getDistancia();
         this.nomeCircuito = c.getNomeCircuito();
@@ -35,9 +36,7 @@ public class Circuito {
     public void setNomeCircuito(String nomeCircuito) {
         this.nomeCircuito = nomeCircuito;
     }
-    public void addSegmentoDePista(SegmentoDePista s){
-        segmentosdepista.add(s.clone());
-    }
+
     public List<SegmentoDePista> getSegmentosdepista() {
         List<SegmentoDePista> seg = new ArrayList<>();
 
@@ -46,8 +45,13 @@ public class Circuito {
         }
         return seg;
     }
+
     public void setSegmentosdepista(List<SegmentoDePista> segmentosdepista) {
         this.segmentosdepista = segmentosdepista;
+    }
+
+    public void addSegmentoDePista(SegmentoDePista s){
+        segmentosdepista.add(s.clone());
     }
     public void calculaSegmentos(){
         int reta = 0, curva = 0, chicane = 0;
@@ -67,5 +71,19 @@ public class Circuito {
     public List<Float> constroiCircuito(){
         calculaSegmentos();
         return segmentosdepista.stream().map((s)->s.getDistancia()).collect(Collectors.toList());
+    }
+
+    public int numSegmento(TipoSegmento seg) {
+        int r = 0;
+        for(SegmentoDePista s: this.segmentosdepista){
+            if (s.getNome()== seg){ r++;}
+        }
+        return r;
+    }
+
+
+
+    public Circuito clone(){
+        return new Circuito(this);
     }
 }
