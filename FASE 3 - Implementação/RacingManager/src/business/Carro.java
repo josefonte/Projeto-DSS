@@ -9,8 +9,21 @@ public abstract class Carro {
     private String id;
     private TipoPneus pneus;
     private ModoMotor modoMotor;
-    
-    public Carro(String marca, String modelo, int celindrada, int potencia, float fiabilidade, int pac, String id) {
+    private String categoria;
+
+    public Carro() {
+        this.categoria = ""
+        this.marca = "";
+        this.modelo = "";
+        this.celindrada = 0;
+        this.potencia = 0;
+        this.fiabilidade = 0;
+        this.pac = 0;
+        this.id = 0;
+    }
+
+    public Carro(String categoria,String marca, String modelo, int celindrada, int potencia, float fiabilidade, int pac, String id) {
+        this.categoria = categoria;
         this.marca = marca;
         this.modelo = modelo;
         this.celindrada = celindrada;
@@ -19,6 +32,26 @@ public abstract class Carro {
         this.pac = pac;
         this.id = id;
     }
+
+    public Carro(Carro c) {
+        this.categoria = c.getCategoria()
+        this.marca = c.getMarca();
+        this.modelo = c.getModelo();
+        this.celindrada = c.getCelindrada();
+        this.potencia = c.getPotencia();
+        this.fiabilidade = c.getFiabilidade();
+        this.pac = getPac();
+        this.id = getId();
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+    public abstract Carro clone();
 
 
     public String getMarca() {
