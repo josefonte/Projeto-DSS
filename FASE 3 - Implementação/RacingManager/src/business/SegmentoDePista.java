@@ -1,23 +1,34 @@
 package business;
 
 public class SegmentoDePista {
+    private int id;
     private int gdu;
     private float distancia;
     private TipoSegmento nome;
 
 
-    public SegmentoDePista(int gdu, int distancia, TipoSegmento nome) {
+
+    public SegmentoDePista(int id, int gdu, float distancia, TipoSegmento nome) {
+        this.id = id;
         this.distancia = distancia;
         this.gdu = gdu;
         this.nome = nome;
     }
 
     public SegmentoDePista(SegmentoDePista s) {
+        this.id = s.getId();
         this.distancia = s.getDistancia();
         this.gdu = s.getGdu();
         this.nome = s.getNome();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public int getGdu() {
         return gdu;
     }
@@ -45,7 +56,8 @@ public class SegmentoDePista {
     @Override
     public String toString() {
         return "SegmentoDePista{" +
-                "gdu=" + gdu +
+                "id="+ id +
+                ", gdu=" + gdu +
                 ", distancia=" + distancia +
                 ", nome=" + nome +
                 '}';
