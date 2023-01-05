@@ -93,6 +93,15 @@ public class Participante {
         int total = this.getPontuacao() + pont;
         this.setPontuacao(total);
     }
+    
+    public LocalTime tempoTotal(){
+        LocalTime r = LocalTime.of(0,0,0);
+        List<LocalTime> list = this.getTempos();
+        for(LocalTime lt: list){
+            r.plusHours(lt.getHour()).plusMinutes(lt.getMinute()).plusSeconds(lt.getSecond());
+        }
+        return r;
+    }
 
     public String getNome(){
         return this.getUtilizador().getNomeUtilizador();
