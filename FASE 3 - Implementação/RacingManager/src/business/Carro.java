@@ -32,6 +32,19 @@ public abstract class Carro {
         this.pac = pac;
         this.id = id;
     }
+    
+    public Carro(String categoria,String marca, String modelo, int celindrada, int potencia, float fiabilidade, int pac, String id,TipoPneus pneus,ModoMotor modo) {
+        this.categoria = categoria;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.celindrada = celindrada;
+        this.potencia = potencia;
+        this.fiabilidade = fiabilidade;
+        this.pac = pac;
+        this.id = id;
+        this.modoMotor = modo;
+        this.pneus = pneus;
+    }
 
     public Carro(Carro c) {
         this.categoria = c.getCategoria();
