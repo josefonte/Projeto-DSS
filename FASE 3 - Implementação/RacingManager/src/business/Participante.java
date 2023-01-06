@@ -23,6 +23,16 @@ public class Participante {
         this.setCarro(u.getCarro());
         this.setUtilizador(u.getUtilizador());
     }
+    
+    public Participante(int pontuacao, List<LocalTime> tempos, int afinacoesRestantes, int voltasTotais, int localizacaoPista, Carro carro, Utilizador utilizador){
+        this.pontuacao = pontuacao;
+        this.tempos = tempos;
+        this.afinacoesRestantes = afinacoesRestantes;
+        this.voltasTotais = voltasTotais;
+        this.localizacaoPista = localizacaoPista;
+        this.carro = carro.clone();
+        this.utilizador = utilizador;
+    }
 
     public int getPontuacao() {
         return this.pontuacao;
