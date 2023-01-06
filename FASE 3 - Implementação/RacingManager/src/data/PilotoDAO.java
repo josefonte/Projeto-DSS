@@ -11,6 +11,20 @@ public class PilotoDAO implements Map<String, Piloto> {
     private PilotoDAO() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
+            String participantes = "CREATE TABLE IF NOT EXISTS participantes (" +
+                    "idParticipante int NOT NULL PRIMARY KEY," +
+                    "pontuacao int NOT NULL,"+
+                    "afinacoesRestantes int NOT NULL," +
+                    "voltasTotais int NOT NULL,"+
+                    "localizacaoPista int NOT NULL," +
+                    "tempos int NOT NULL FOREIGN KEY," +
+                    "campeonato_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
+                    "utilizador_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
+                    "carro_id int NOT NULL FOREIGN KEY," +
+                    "piloto_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
+                    "corrida_id int NOT NULL FOREIGN KEY," +
+                    "corrida_circuito_nome VARCHAR(45) NOT NULL FOREIGN KEY)";
+            stm.executeUpdate(participantes);
             String sql = "CREATE TABLE IF NOT EXISTS Piloto (" +
                     "nome varchar(45) NOT NULL PRIMARY KEY," +
                     "sva int NOT NULL,"+
