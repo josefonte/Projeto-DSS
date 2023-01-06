@@ -31,7 +31,7 @@ public class Participante {
         this.voltasTotais = voltasTotais;
         this.localizacaoPista = localizacaoPista;
         this.carro = carro.clone();
-        this.utilizador = utilizador;
+        this.utilizador = utilizador.clone();
     }
 
     public int getPontuacao() {
