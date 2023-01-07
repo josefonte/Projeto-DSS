@@ -1,10 +1,9 @@
 package data;
 
-import business.Campeonato;
-import business.Circuito;
-import business.SegmentoDePista;
+import business.*;
 
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.*;
 
 public class CampeonatoDAO implements Map<String , Campeonato> {
@@ -59,7 +58,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                     "carro_id int NOT NULL FOREIGN KEY," +
                     "piloto_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
                     "corrida_id int NOT NULL FOREIGN KEY," +
-                    "corrida_circuito_nome VARCHAR(45) NOT NULL FOREIGN KEY)"
+                    "corrida_circuito_nome VARCHAR(45) NOT NULL FOREIGN KEY)";
             stm.executeUpdate(participantes);
             String pilotos = "CREATE TABLE IF NOT EXISTS Piloto (" +
                     "nome varchar(45) NOT NULL PRIMARY KEY," +
@@ -138,18 +137,50 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
              ResultSet rs = stm.executeQuery("SELECT * FROM campeonatos WHERE nome='"+key+"'")) {
             if (rs.next()) {  // A chave existe na tabela
                 // Reconstruir a os segmentos de pista
-                ArrayList<SegmentoDePista> segmentos = getSegmentosCircuito(key.toString(), stm);
                 //reconstruir circuito
-                t = new Circuito(rs.getFloat("distancia"),
-                        rs.getString("nome"),
-                        segmentos);
+                String nomeCampeonato=rs.getString("nome");
+                int corridaAtual=rs.getInt("corridaAtual");
+                List<Corrida> corridas = getCorridas(key.toString(), stm);
+                Map<String, Participante> campParticipantes = getParticipantes(key.toString(),stm);
+                c = new Campeonato(nomeCampeonato,corridaAtual,corridas, campParticipantes);
             }
         } catch (SQLException e) {
             // Database error!
             e.printStackTrace();
             throw new NullPointerException(e.getMessage());
         }
-        return t;
+        return c;
+    }
+
+    private Map<String, Participante> getParticipantes(String key, Statement stm) throws SQLException {
+        Map<String,Participante> r = new HashMap<>();
+        // preencher com o conteúdo da base de dados
+        try (ResultSet rsa = stm.executeQuery("SELECT * FROM participantes WHERE campeonatoNome='"+key+"'")) {
+            while (rsa.next()) {
+                List<LocalTime> tempos = getTemposParticipante(rsa.getInt("tempos"), stm);
+                Carro carro = getCarroParticipante(rsa.getInt("carro_id"), stm);
+                Utilizador utilizador = getUtilizadorParticipante(rsa.getString("utilizador_nome"));
+                Participante participante = new Participante(rsa.getInt("idParticipante"), rsa.getInt("pontuacao"), rsa.getInt("afinacoesRestantes"), rsa.getInt("voltasTotais"), rsa.getInt("localizacaoPista"),tempos,carro,utilizador);
+                r.put((Integer.toString(rsa.getInt("idParticipante"))),participante);
+            }
+        }
+        return r;
+    }
+
+    private Utilizador getUtilizadorParticipante(String utilizadorNome) throws SQLException{
+        return null;
+    }
+
+    private Carro getCarroParticipante(int carroId, Statement stm) throws SQLException{
+        return null;
+    }
+
+    private List<LocalTime> getTemposParticipante(int tempos, Statement stm) throws SQLException{
+        return null;
+    }
+
+    private List<Corrida> getCorridas(String toString, Statement stm) {
+        return null;
     }
 
     @Override
@@ -158,8 +189,20 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
     }
 
     @Override
-    public Campeonato remove(Object o) {
-        return null;
+    public Campeonato remove(Object key) {
+        Campeonato c = this.get(key);
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement()){
+            // apagar a segmentos
+            stm.executeUpdate("DELETE FROM participantes WHERE nome_campeonato='"+key+"'");
+            // apagar circuito
+            stm.executeUpdate("DELETE FROM campeonatos WHERE nome='"+key+"'");
+        } catch (Exception e) {
+            // Database error!
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return c;
     }
 
     @Override
@@ -169,6 +212,15 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
 
     @Override
     public void clear() {
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement()) {
+            stm.executeUpdate("TRUNCATE participantes");
+            stm.executeUpdate("TRUNCATE campeonatos");
+        } catch (SQLException e) {
+            // Database error!
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
 
     }
 
