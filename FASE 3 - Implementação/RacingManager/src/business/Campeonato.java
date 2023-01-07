@@ -10,6 +10,13 @@ public class Campeonato {
     public List<Corrida> corridas;
     public Map<String,Participante> campParticipantes;
 
+    public Campeonato(String nomeCampeonato, int corridaAtual, List<Corrida> corridas, Map<String, Participante> campParticipantes) {
+        this.nomeCampeonato=nomeCampeonato;
+        this.corridaAtual=corridaAtual;
+        this.corridas=corridas;
+        this.campParticipantes=campParticipantes;
+    }
+
     public String getNomeCampeonato() {
         return nomeCampeonato;
     }
