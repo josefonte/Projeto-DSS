@@ -16,7 +16,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
             String campeonato = "CREATE TABLE IF NOT EXISTS campeonatos ("+
                     "nome varchar(16) NOT NULL PRIMARY KEY, "+
                     "corridaAtual INT NOT NULL, "+
-                    "Categoria ENUM('C1','C2','GT','SC'))";
+                    "categoria ENUM('C1','C2','GT','SC'))";
             stm.executeUpdate(campeonato);
             String corridas ="CREATE TABLE IF NOT EXISTS corridas ("+
                     "id INT NOT NULL PRIMARY KEY, "+
@@ -150,10 +150,10 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                 String nomeCampeonato=rs.getString("nome");
                 int corridaAtual=rs.getInt("corridaAtual");
                 List<Corrida> corridas = getCorridas(key.toString(), stm);
-                Map<String, Participante> campParticipantes = getParticipantes(key.toString(),stm);
-
+                //Map<String, Participante> campParticipantes = getParticipantes(key.toString(),stm);
+                Map<String, Participante> campParticipantes = new HashMap<>();
                 //TipoCampeonato tipo =
-                c = new Campeonato(nomeCampeonato,corridaAtual,corridas, campParticipantes);
+                c = new Campeonato(nomeCampeonato,corridaAtual,corridas, campParticipantes, Enum.valueOf(TipoCampeonato.class, rs.getString("categoria"));
             }
         } catch (SQLException e) {
             // Database error!
@@ -223,15 +223,36 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
         return r;
     }
 
-    private List<Corrida> getCorridas(String toString, Statement stm) throws SQLException {
+    private List<Corrida> getCorridas(String key, Statement stm) throws SQLException {
         List<Corrida> r = new ArrayList<>();
-        try(ResultSet rs = stm.executeQuery("SELECT * FROM corridas WHERE ")) {
+        try(ResultSet rs = stm.executeQuery("SELECT * FROM corridas WHERE id='"+key+"'")) {
             while (rs.next()){
                 Participante p = getUtilizadorParticipante(,stm);
-                Corrida c = new Corrida(rs.)
+                Circuito circuito = getCircuitoCorrida(rs.getString("circuito"),stm);
+                Map<String, Participante> participantes = new HashMap<>();
+                Corrida c = new Corrida(circuito, participantes, rs.getInt("clima"), rs.getInt("voltas"));
+                r.add(c);
             }
         }
         return r;
+    }
+
+    private Circuito getCircuitoCorrida(String circuito, Statement stm) throws SQLException{
+        Circuito c = null;
+        try(ResultSet rs = stm.executeQuery("SELECT * FROM circuitos WHERE nome = '"+circuito+"´")){
+            List<SegmentoDePista> segmentos = getSegmentos(rs.getString("nome"),stm)
+            c = new Circuito(rs.getFloat("distancia"), rs.getString("nome"),segmentos,);
+        }
+        return c;
+    }
+
+    private List<SegmentoDePista> getSegmentos(String nome, Statement stm) throws SQLException{
+        List<SegmentoDePista> segs = null;
+        try(ResultSet rs = stm.executeQuery("SELECT * FROM segmentos WHERE nomecircuito = '"+nome+"´")){
+            SegmentoDePista seg = new SegmentoDePista(rs.getInt("gdu"), rs.getFloat("distancia"),Enum.valueOf(TipoSegmento.class, rs.getString("TipoSegmento"))); );
+            segs.add(seg);
+        }
+        return segs;
     }
 
     @Override
