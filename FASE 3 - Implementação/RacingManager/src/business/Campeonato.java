@@ -10,13 +10,22 @@ public class Campeonato {
     public List<Corrida> corridas;
     public Map<String,Participante> campParticipantes;
 
-    public Compeonato(String nome,int corAtual,List<Corrida> cor, Map<String, Participante> participantes) {
-        
+    public TipoCampeonato tipoCampeonato;
+
+    public Campeonato(String nome,int corAtual,List<Corrida> cor, Map<String, Participante> participantes,TipoCampeonato tipoCamp) {
+        this.nomeCampeonato = nome;
+        this.corridaAtual = corAtual;
+        this.corridas =  cor.stream().map((s)->s.clone()).collect(Collectors.toList());
+        this.campParticipantes = new HashMap<String,Participante>();
+        for(Participante p : participantes.values()){
+            this.campParticipantes.put(p.getNome(),p.clone());
+        }
+        this.tipoCampeonato = tipoCamp;
     }
     
     public String getNomeCampeonato() {
         return nomeCampeonato;
-    }Campeonato
+    }
 
     public void setNomeCampeonato(String nomeCampeonato) {
         this.nomeCampeonato = nomeCampeonato;
@@ -68,17 +77,29 @@ public class Campeonato {
         this.campParticipantes.put(participante.getNome(),participante.clone());
     }
 
-    private void atualizarParticipantes(Corrida corrida){
+    private void addPontuacaoCampeonato(Corrida corrida){
+        List<Participante> pList = corrida.listaClacificacao();
+        for(int i = 0 ; i<10 ; i++) {
+            addParticipante(pList.get(i));
+        }
 
     }
 
     private void simularCorrida(){
+        if (corridaAtual >= corridas.size()) return;
         Corrida c = this.corridas.get(corridaAtual);
         c.simularCorrida();
+        addPontuacaoCampeonato(c);
+        corridaAtual++;
     }
 
     public List<Participante> classificacaoFinal(){
-
+        List<Participante> r = new ArrayList<>();
+        for (Participante p : this.campParticipantes.values()){
+            r.add(p.clone());
+        }
+        Collections.sort(r, new Sortbypoints());
+        return r;
     }
 
     private int calculaAfinacoes(){
@@ -94,10 +115,5 @@ public class Campeonato {
         }
         this.setCampParticipantes(res);
         return max;
-    }
-
-
-    private void simularCampeonato(){
-
     }
 }
