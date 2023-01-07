@@ -45,7 +45,17 @@ public class Piloto {
     public void setCts(int cts) {
         this.cts = cts;
     }
-    
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Piloto:  ");
+        sb.append("nome='" + nome );
+        sb.append("/ sva=" + sva );
+        sb.append("/ cts=" + cts);
+        return sb.toString();
+    }
+
     public Piloto clone(){
         return new Piloto(this);
     }

@@ -145,14 +145,15 @@ public abstract class Carro {
 
     @Override
     public String toString() {
-        return "Carro{" +
-                "marca='" + marca + '\'' +
-                ", modelo='" + modelo + '\'' +
-                ", celindrada=" + celindrada +
-                ", potencia=" + potencia +
-                ", fiabilidade=" + fiabilidade +
-                ", pac=" + pac +
-                ", id='" + id + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Carro:  ");
+        sb.append("marca = "+ marca);
+        sb.append("/ modelo = " + modelo);
+        sb.append("/ cilindrada=" + celindrada);
+        sb.append("/ potencia=" + potencia );
+        sb.append("/ fiabilidade=" + fiabilidade);
+        sb.append("/ pac=" + pac );
+        sb.append("/ id=" + id );
+        return sb.toString();
     }
 }

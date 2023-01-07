@@ -22,7 +22,19 @@ public class SC extends Carro{
 
     @Override
     public void calculaPotencia(){}
-    
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Carro SC:  ");
+        sb.append("marca = "+ super.getMarca());
+        sb.append("/ modelo = " + super.getModelo());
+        sb.append("/ cilindrada=" + super.getCelindrada());
+        sb.append("/ potencia=" + super.getPotencia());
+        sb.append("/ fiabilidade=" + super.getFiabilidade());
+        sb.append("/ pac=" + super.getPac());
+        sb.append("/ id=" + super.getId());
+        return sb.toString();
+    }
     public SC clone(){
         return new SC(this);
     }

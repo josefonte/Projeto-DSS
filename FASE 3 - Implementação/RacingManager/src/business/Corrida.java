@@ -176,6 +176,17 @@ public class Corrida implements Serializable
         return r;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Circuito:  ");
+        sb.append("/ circuito=" + circuito);
+        sb.append("/ participantes=" + participantes);
+        sb.append("/ clima=" + clima );
+        sb.append("/ voltas=" + voltas  );
+        return sb.toString();
+    }
+
     public Corrida clone(){
         return new Corrida(this);
     }

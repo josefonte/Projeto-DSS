@@ -37,4 +37,18 @@ public class C2 extends Carro{
     public C2 clone(){
         return new C2(this);
     }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Carro C2:  ");
+        sb.append("marca = "+ super.getMarca());
+        sb.append("/ modelo = " + super.getModelo());
+        sb.append("/ cilindrada=" + super.getCelindrada());
+        sb.append("/ potencia=" + super.getPotencia());
+        sb.append("/ fiabilidade=" + super.getFiabilidade());
+        sb.append("/ pac=" + super.getPac());
+        sb.append("/ id=" + super.getId());
+        sb.append("/ potencia hibrida= "+ getPotenciaHibrida());
+        return sb.toString();
+    }
 }

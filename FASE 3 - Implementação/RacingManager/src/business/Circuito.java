@@ -93,6 +93,16 @@ public class Circuito {
         return r;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Circuito:  ");
+        sb.append("/ distancia=" + distancia );
+        sb.append("/ nomeCircuito='" + nomeCircuito );
+        sb.append("/ segmentosdepista=" + segmentosdepista);
+        return sb.toString();
+    }
+
     public Circuito clone(){
         return new Circuito(this);
     }

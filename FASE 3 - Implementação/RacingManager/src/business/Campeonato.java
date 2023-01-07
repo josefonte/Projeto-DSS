@@ -33,7 +33,7 @@ public class Campeonato {
         this.corridaAtual = c.getCorridaAtual();
         this.corridas = c.getCorridas();
         this.campParticipantes = c.getCampParticipantes();
-        this.tipoCampeonato = c.getTipoCampeonato()
+        this.tipoCampeonato = c.getTipoCampeonato();
     }
     
     

@@ -108,7 +108,7 @@ public class CircuitoDAO implements Map<String,Circuito>{
 
     @Override
     public Circuito put(String key, Circuito value) {
-        Circuito res = null;
+        Circuito res;
         ArrayList<SegmentoDePista> s = (ArrayList<SegmentoDePista>) value.getSegmentosdepista();
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
@@ -183,7 +183,7 @@ public class CircuitoDAO implements Map<String,Circuito>{
 
     @Override
     public Set<String> keySet() {
-        Set<String> res= new HashSet<>();;
+        Set<String> res= new HashSet<>();
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()){
             ResultSet rs = stm.executeQuery("SELECT nome FROM circuitos");

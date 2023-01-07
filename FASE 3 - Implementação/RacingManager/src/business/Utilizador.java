@@ -68,6 +68,16 @@ public class Utilizador {
 
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Utilizador:  ");
+        sb.append("nomeUtilizador='" + nomeUtilizador);
+        sb.append("/ pontosRanking=" + pontosRanking);
+        sb.append(", tipoutiliador=" + tipoutiliador);
+        return sb.toString();
+    }
+
     public Utilizador clone(){
         return new Utilizador(this);
     }

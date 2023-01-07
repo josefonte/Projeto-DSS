@@ -180,7 +180,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
     }
 
     private Piloto getPilotoParticipante(String pilotoNome, Statement stm) throws SQLException{
-        Piloto p = null;
+        Piloto p;
         try (ResultSet rsa = stm.executeQuery("SELECT * FROM pilotos WHERE nome='"+pilotoNome+"'")){
             p = new Piloto(rsa.getString("nome"), rsa.getInt("sva"), rsa.getInt("cts"));
         }
@@ -188,7 +188,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
     }
 
     private Utilizador getUtilizadorParticipante(String utilizadorNome, Statement stm) throws SQLException{
-        Utilizador u = null;
+        Utilizador u;
         try (ResultSet rsa = stm.executeQuery("SELECT * FROM utilizadores WHERE nomeUtilizaodr='"+utilizadorNome+"'")){
             u = new Utilizador(rsa.getString("nomeUtilizador"),  Enum.valueOf(TipoUtilizador.class, rsa.getString("tipoUtilizador")), rsa.getInt("pontosRanking"));
         }
@@ -244,7 +244,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
     }
 
     private Circuito getCircuitoCorrida(String circuito, Statement stm) throws SQLException{
-        Circuito c = null;
+        Circuito c;
         try(ResultSet rs = stm.executeQuery("SELECT * FROM circuitos WHERE nome = '"+circuito+"´")){
             ArrayList<SegmentoDePista> segmentos = getSegmentos(rs.getString("nome"),stm);
             c = new Circuito(rs.getFloat("distancia"), rs.getString("nome"),segmentos);
