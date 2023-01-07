@@ -138,7 +138,7 @@ public class Campeonato {
     }
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Campeonato:  ")
+        sb.append("Campeonato:  ");
         sb.append("/ nome= " + nomeCampeonato);
         sb.append("/ corridaAtual=" + corridaAtual);
         sb.append("/ corridas=" + corridas);
@@ -148,7 +148,7 @@ public class Campeonato {
     }
     public String toSimpleString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Campeonato:  ")
+        sb.append("Campeonato:  ");
         sb.append("/ nome= " + nomeCampeonato);
         return sb.toString();
     }
