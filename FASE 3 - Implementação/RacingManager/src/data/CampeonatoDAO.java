@@ -18,24 +18,26 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                     "corridaAtual INT NOT NULL, "+
                     "categoria ENUM('C1','C2','GT','SC'))";
             stm.executeUpdate(campeonato);
-            String corridas ="CREATE TABLE IF NOT EXISTS corridas ("+
-                    "id INT NOT NULL PRIMARY KEY, "+
-                    "clima INT NOT NULL, "+
-                    "voltas INT NOT NULL, "+
-                    "circuito varchar(45) NOT NULL FOREIGN KEY)";
-            stm.executeUpdate(corridas);
             String circuito ="CREATE TABLE IF NOT EXISTS circuitos ("+
                     "nome varchar(45) NOT NULL PRIMARY KEY,"+
                     "distancia float(10) NOT NULL, " +
                     "volta int NOT NULL)";
             stm.executeUpdate(circuito);
+            String corridas ="CREATE TABLE IF NOT EXISTS corridas ("+
+                    "id INT NOT NULL PRIMARY KEY, "+
+                    "clima INT NOT NULL, "+
+                    "voltas INT NOT NULL, "+
+                    "circuito varchar(45) NOT NULL,"+
+                    "FOREIGN KEY (circuito) REFERENCES circuitos(nome))";
+            stm.executeUpdate(corridas);
             String segmentos = "CREATE TABLE IF NOT EXISTS segmentos ("+
                     "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"+
                     "indice INT NOT NULL,"+
                     "gdu INT NOT NULL,"+
-                    "distancia float NOT NULL"+
-                    "nome ENUM('CURVA','RETA','CHICANE'),"+
-                    "FOREIGN KEY (nomecircuito) references circuitos(nome))";
+                    "distancia float NOT NULL,"+
+                    "nome VARCHAR(17) NOT NULL,"+
+                    "nomecircuito varchar(45) NOT NULL,"+
+                    "FOREIGN KEY (nomecircuito) REFERENCES circuitos(nome))";
             stm.executeUpdate(segmentos);
             String carros = "CREATE TABLE IF NOT EXISTS carros (" +
                     "id varchar(10) NOT NULL PRIMARY KEY," +
@@ -46,30 +48,12 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                     "potencia INT NOT NULL," +
                     "fiabilidade FLOAT DEFAULT NULL," +
                     "pac INT NOT NULL," +
-                    "TipoPneus ENUM ('Duro','Macio','Chuva')," +
-                    "ModoMotor ENUM('Conversador','Normal', 'Agressivo')," +
+                    "TipoPneus VARCHAR(17) NOT NULL ," +
+                    "ModoMotor VARCHAR(17) NOT NULL," +
                     "potenciaHibrido INT DEFAULT NULL," +
                     "taxaDeteorizacao INT DEFAULT NULL)";
             stm.executeUpdate(carros);
-            String participantes = "CREATE TABLE IF NOT EXISTS participantes (" +
-                    "idParticipante int NOT NULL PRIMARY KEY," +
-                    "pontuacao INT NOT NULL,"+
-                    "afinacoesRestantes INT NOT NULL," +
-                    "voltasTotais INT NOT NULL,"+
-                    "localizacaoPista INT NOT NULL," +
-                    "tempos INT NOT NULL FOREIGN KEY," +
-                    "campeonato_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
-                    "utilizador_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
-                    "carro_id INT NOT NULL FOREIGN KEY," +
-                    "piloto_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
-                    "corrida_id INT NOT NULL FOREIGN KEY," +
-                    "corrida_circuito_nome VARCHAR(45) NOT NULL FOREIGN KEY)";
-            stm.executeUpdate(participantes);
-            String tempos = "CREATE TABLE IF NOT EXISTS tempos (" +
-                    "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
-                    "dt_value varchar(45) NOT NULL)";
-            stm.executeUpdate(tempos);
-            String pilotos = "CREATE TABLE IF NOT EXISTS Piloto (" +
+            String pilotos = "CREATE TABLE IF NOT EXISTS pilotos (" +
                     "nome varchar(45) NOT NULL PRIMARY KEY," +
                     "sva INT NOT NULL,"+
                     "cts INT NOT NULL)";
@@ -77,8 +61,35 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
             String utilizadores="CREATE TABLE IF NOT EXISTS utilizadores (" +
                     "nomeUtilizador varchar(45) NOT NULL PRIMARY KEY," +
                     "pontosRanking INT NOT NULL,"+
-                    "tipoUtilizador ENUM ('Admin','Jogador','Convidado','Bot')";
+                    "tipoUtilizador VARCHAR(17) NOT NULL)";
             stm.executeUpdate(utilizadores);
+            String tempos = "CREATE TABLE IF NOT EXISTS tempos (" +
+                    "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
+                    "dt_value varchar(45) NOT NULL)";
+            stm.executeUpdate(tempos);
+            String participantes = "CREATE TABLE IF NOT EXISTS participantes (" +
+                    "idParticipante int NOT NULL PRIMARY KEY," +
+                    "pontuacao INT NOT NULL,"+
+                    "afinacoesRestantes INT NOT NULL," +
+                    "voltasTotais INT NOT NULL,"+
+                    "localizacaoPista INT NOT NULL," +
+                    "tempos INT NOT NULL," +
+                    "campeonato_nome VARCHAR(16) NOT NULL," +
+                    "utilizador_nome VARCHAR(45) NOT NULL," +
+                    "carro_id varchar(10) NOT NULL ," +
+                    "piloto_nome VARCHAR(45) NOT NULL,"+
+                    "corrida_id INT NOT NULL, "+
+                    "corrida_circuito_nome VARCHAR(45),"+
+                    "FOREIGN KEY (tempos) REFERENCES tempos(id),"+
+                    "FOREIGN KEY (campeonato_nome) REFERENCES campeonatos(nome),"+
+                    "FOREIGN KEY (utilizador_nome) REFERENCES utilizadores(nomeUtilizador),"+
+                    "FOREIGN KEY (carro_id) REFERENCES carros(id),"+
+                    "FOREIGN KEY (piloto_nome) REFERENCES pilotos(nome)," +
+                    "FOREIGN KEY (corrida_id) REFERENCES corridas(id)," +
+                    "FOREIGN KEY (corrida_circuito_nome) REFERENCES circuitos(nome))";
+            stm.executeUpdate(participantes);
+
+
 
         } catch (SQLException e) {
             // Database error!
@@ -200,16 +211,20 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
         try(ResultSet rs = stm.executeQuery("SELECT * FROM carros WHERE id = '"+carroId+"'")){
             String categoria = rs.getString("categoria");
             switch (categoria) {
-                case "C1" ->
+                case "C1" :
                         c = new C1(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getInt("pac"), rs.getString("id"), rs.getInt("potenciaHibrida"));
-                case "C2" ->
+                        break;
+                case "C2" :
                         c = new C2(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getInt("pac"), rs.getString("id"), rs.getInt("potenciaHibrida"));
-                case "SC" ->
+                        break;
+                case "SC" :
                         c = new SC(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getInt("pac"), rs.getString("id"));
-                case "GT" ->
+                        break;
+                case "GT" :
                         c = new GT(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getInt("pac"), rs.getString("id"), rs.getInt("potenciaHibrida"), rs.getInt("taxadeteorizacao"));
-                default -> {
-                }
+                        break;
+                default:
+                    break;
             }
         }
         return c;

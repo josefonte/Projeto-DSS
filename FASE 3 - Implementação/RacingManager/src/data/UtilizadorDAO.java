@@ -11,25 +11,32 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
     private UtilizadorDAO() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
-            String participantes = "CREATE TABLE IF NOT EXISTS participantes (" +
-                    "idParticipante int NOT NULL PRIMARY KEY," +
-                    "pontuacao int NOT NULL,"+
-                    "afinacoesRestantes int NOT NULL," +
-                    "voltasTotais int NOT NULL,"+
-                    "localizacaoPista int NOT NULL," +
-                    "tempos int NOT NULL FOREIGN KEY," +
-                    "campeonato_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
-                    "utilizador_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
-                    "carro_id int NOT NULL FOREIGN KEY," +
-                    "piloto_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
-                    "corrida_id int NOT NULL FOREIGN KEY," +
-                    "corrida_circuito_nome VARCHAR(45) NOT NULL FOREIGN KEY)";
-            stm.executeUpdate(participantes);
             String sql = "CREATE TABLE IF NOT EXISTS utilizadores (" +
                     "nomeUtilizador varchar(45) NOT NULL PRIMARY KEY," +
                     "pontosRanking int NOT NULL,"+
-                    "tipoUtilizador ENUM ('Admin','Jogador','Convidado','Bot')";
+                    "tipoUtilizador VARCHAR(17) NOT NULL)"; //('Admin','Jogador','Convidado','Bot')
             stm.executeUpdate(sql);
+            String participantes = "CREATE TABLE IF NOT EXISTS participantes (" +
+                    "idParticipante int NOT NULL PRIMARY KEY," +
+                    "pontuacao INT NOT NULL,"+
+                    "afinacoesRestantes INT NOT NULL," +
+                    "voltasTotais INT NOT NULL,"+
+                    "localizacaoPista INT NOT NULL," +
+                    "tempos INT NOT NULL," +
+                    "campeonato_nome VARCHAR(16) NOT NULL," +
+                    "utilizador_nome VARCHAR(45) NOT NULL," +
+                    "carro_id varchar(10) NOT NULL ," +
+                    "piloto_nome VARCHAR(45) NOT NULL,"+
+                    "corrida_id INT NOT NULL, "+
+                    "corrida_circuito_nome VARCHAR(45),"+
+                    "FOREIGN KEY (tempos) REFERENCES tempos(id),"+
+                    "FOREIGN KEY (campeonato_nome) REFERENCES campeonatos(nome),"+
+                    "FOREIGN KEY (utilizador_nome) REFERENCES utilizadores(nomeUtilizador),"+
+                    "FOREIGN KEY (carro_id) REFERENCES carros(id),"+
+                    "FOREIGN KEY (piloto_nome) REFERENCES pilotos(nome)," +
+                    "FOREIGN KEY (corrida_id) REFERENCES corridas(id)," +
+                    "FOREIGN KEY (corrida_circuito_nome) REFERENCES circuitos(nome))";
+            stm.executeUpdate(participantes);
         } catch (SQLException e) {
             // Erro a criar tabela...
             e.printStackTrace();

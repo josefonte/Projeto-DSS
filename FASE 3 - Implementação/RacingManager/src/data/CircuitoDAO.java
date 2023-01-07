@@ -109,7 +109,7 @@ public class CircuitoDAO implements Map<String,Circuito>{
     @Override
     public Circuito put(String key, Circuito value) {
         Circuito res;
-        ArrayList<SegmentoDePista> s = (ArrayList<SegmentoDePista>) value.getSegmentosdepista();
+        ArrayList<SegmentoDePista> s = value.getSegmentosdepista();
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
 
@@ -127,7 +127,7 @@ public class CircuitoDAO implements Map<String,Circuito>{
             for (int i=0; i<s.size();i++){
                 SegmentoDePista seg = s.get(i);
                 stm.executeUpdate("INSERT INTO segmentos " +
-                        "VALUES ("+ i+ ", '"+
+                        "VALUES ("+ (i-1)+ ", '"+
                         seg.getGdu()+"', '"+
                         seg.getDistancia()+"', '"+
                         seg.getNome()+"', '"+
