@@ -4,6 +4,7 @@ import business.*;
 
 import java.sql.*;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class CampeonatoDAO implements Map<String , Campeonato> {
@@ -17,7 +18,11 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                     "corridaAtual INT NOT NULL, "+
                     "Categoria ENUM('C1','C2','GT','SC'))";
             stm.executeUpdate(campeonato);
-            String corridas ="";
+            String corridas ="CREATE TABLE IF NOT EXISTS corridas ("+
+                    "id INT NOT NULL PRIMARY KEY, "+
+                    "clima INT NOT NULL, "+
+                    "voltas INT NOT NULL, "+
+                    "circuito varchar(45) NOT NULL FOREIGN KEY)";
             stm.executeUpdate(corridas);
             String circuito ="CREATE TABLE IF NOT EXISTS circuitos ("+
                     "nome varchar(45) NOT NULL PRIMARY KEY,"+
@@ -25,9 +30,9 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                     "volta int NOT NULL)";
             stm.executeUpdate(circuito);
             String segmentos = "CREATE TABLE IF NOT EXISTS segmentos ("+
-                    "id int NOT NULL PRIMARY KEY AUTO_INCREMENT,"+
-                    "indice int NOT NULL,"+
-                    "gdu int NOT NULL,"+
+                    "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"+
+                    "indice INT NOT NULL,"+
+                    "gdu INT NOT NULL,"+
                     "distancia float NOT NULL"+
                     "nome ENUM('CURVA','RETA','CHICANE'),"+
                     "FOREIGN KEY (nomecircuito) references circuitos(nome))";
@@ -37,37 +42,41 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                     "categoria varchar(10) NOT NULL,"+
                     "modelo varchar(45) NOT NULL," +
                     "marca varchar(45) NOT NULL,"+
-                    "celindrada int NOT NULL," +
-                    "potencia int NOT NULL," +
-                    "fiabilidade float DEFAULT NULL," +
-                    "pac int NOT NULL," +
+                    "celindrada INT NOT NULL," +
+                    "potencia INT NOT NULL," +
+                    "fiabilidade FLOAT DEFAULT NULL," +
+                    "pac INT NOT NULL," +
                     "TipoPneus ENUM ('Duro','Macio','Chuva')," +
                     "ModoMotor ENUM('Conversador','Normal', 'Agressivo')," +
-                    "potenciaHibrido int DEFAULT NULL," +
-                    "taxaDeteorizacao int DEFAULT NULL)";
+                    "potenciaHibrido INT DEFAULT NULL," +
+                    "taxaDeteorizacao INT DEFAULT NULL)";
             stm.executeUpdate(carros);
             String participantes = "CREATE TABLE IF NOT EXISTS participantes (" +
                     "idParticipante int NOT NULL PRIMARY KEY," +
-                    "pontuacao int NOT NULL,"+
-                    "afinacoesRestantes int NOT NULL," +
-                    "voltasTotais int NOT NULL,"+
-                    "localizacaoPista int NOT NULL," +
-                    "tempos int NOT NULL FOREIGN KEY," +
+                    "pontuacao INT NOT NULL,"+
+                    "afinacoesRestantes INT NOT NULL," +
+                    "voltasTotais INT NOT NULL,"+
+                    "localizacaoPista INT NOT NULL," +
+                    "tempos INT NOT NULL FOREIGN KEY," +
                     "campeonato_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
                     "utilizador_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
-                    "carro_id int NOT NULL FOREIGN KEY," +
+                    "carro_id INT NOT NULL FOREIGN KEY," +
                     "piloto_nome VARCHAR(45) NOT NULL FOREIGN KEY," +
-                    "corrida_id int NOT NULL FOREIGN KEY," +
+                    "corrida_id INT NOT NULL FOREIGN KEY," +
                     "corrida_circuito_nome VARCHAR(45) NOT NULL FOREIGN KEY)";
             stm.executeUpdate(participantes);
+            String tempos = "CREATE TABLE IF NOT EXISTS tempos (" +
+                    "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
+                    "dt_value varchar(45) NOT NULL)";
+            stm.executeUpdate(tempos);
             String pilotos = "CREATE TABLE IF NOT EXISTS Piloto (" +
                     "nome varchar(45) NOT NULL PRIMARY KEY," +
-                    "sva int NOT NULL,"+
-                    "cts int NOT NULL)";;
+                    "sva INT NOT NULL,"+
+                    "cts INT NOT NULL)";;
             stm.executeUpdate(pilotos);
             String utilizadores="CREATE TABLE IF NOT EXISTS utilizadores (" +
                     "nomeUtilizador varchar(45) NOT NULL PRIMARY KEY," +
-                    "pontosRanking int NOT NULL,"+
+                    "pontosRanking INT NOT NULL,"+
                     "tipoUtilizador ENUM ('Admin','Jogador','Convidado','Bot')";
             stm.executeUpdate(utilizadores);
 
@@ -113,7 +122,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
         boolean r;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
-             ResultSet rs = stm.executeQuery("SELECT Nome FROM campeonatos WHERE Nome='"+key.toString()+"'")) {
+             ResultSet rs = stm.executeQuery("SELECT nome FROM campeonatos WHERE nome='"+key.toString()+"'")) {
             r = rs.next();
         } catch (SQLException e) {
             // Database error!
@@ -142,6 +151,8 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                 int corridaAtual=rs.getInt("corridaAtual");
                 List<Corrida> corridas = getCorridas(key.toString(), stm);
                 Map<String, Participante> campParticipantes = getParticipantes(key.toString(),stm);
+
+                //TipoCampeonato tipo =
                 c = new Campeonato(nomeCampeonato,corridaAtual,corridas, campParticipantes);
             }
         } catch (SQLException e) {
@@ -159,7 +170,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
             while (rsa.next()) {
                 List<LocalTime> tempos = getTemposParticipante(rsa.getInt("tempos"), stm);
                 Carro carro = getCarroParticipante(rsa.getInt("carro_id"), stm);
-                Utilizador utilizador = getUtilizadorParticipante(rsa.getString("utilizador_nome"));
+                Utilizador utilizador = getUtilizadorParticipante(rsa.getString("utilizador_nome"),stm);
                 Participante participante = new Participante(rsa.getInt("idParticipante"), rsa.getInt("pontuacao"), rsa.getInt("afinacoesRestantes"), rsa.getInt("voltasTotais"), rsa.getInt("localizacaoPista"),tempos,carro,utilizador);
                 r.put((Integer.toString(rsa.getInt("idParticipante"))),participante);
             }
@@ -167,20 +178,59 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
         return r;
     }
 
-    private Utilizador getUtilizadorParticipante(String utilizadorNome) throws SQLException{
-        return null;
+    private Utilizador getUtilizadorParticipante(String utilizadorNome, Statement stm) throws SQLException{
+        Utilizador u = null;
+        try (ResultSet rsa = stm.executeQuery("SELECT * FROM utilizadores WHERE nomeUtilizaodr='"+utilizadorNome+"'")){
+            u = new Utilizador(rsa.getString("nomeUtilizador"),  Enum.valueOf(TipoUtilizador.class, rsa.getString("tipoUtilizador")), rsa.getInt("pontosRanking"));
+        }
+        return u;
     }
 
     private Carro getCarroParticipante(int carroId, Statement stm) throws SQLException{
-        return null;
+        Carro c = null;
+        try(ResultSet rs = stm.executeQuery("SELECT * FROM carros WHERE id = '"+carroId+"'")){
+            String categoria = rs.getString("categoria");
+            switch (categoria){
+                case "C1":
+                    c = new C1(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrida"));
+                    break;
+                case "C2":
+                    c = new C2(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrida"));
+                    break;
+                case "SC":
+                    c = new SC(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"));
+                    break;
+                case "GT":
+                    c = new GT(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrida"), rs.getInt("taxadeteorizacao"));
+                    break;
+                default:
+                    break;
+            }
+        }
+        return c;
     }
 
     private List<LocalTime> getTemposParticipante(int tempos, Statement stm) throws SQLException{
-        return null;
+        List<LocalTime> r = new ArrayList<>();
+        try (ResultSet rs = stm.executeQuery("SELECT * FROM tempos WHERE id = '"+ Integer.toString(tempos) + "'")){
+            while(rs.next()){
+                String timeS = rs.getString("dt_value");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                LocalTime time = LocalTime.parse(timeS, formatter);
+                r.add(time);
+            }
+        }
+        return r;
     }
 
-    private List<Corrida> getCorridas(String toString, Statement stm) {
-        return null;
+    private List<Corrida> getCorridas(String toString, Statement stm) throws SQLException {
+        List<Corrida> r = new ArrayList<>();
+        try(ResultSet rs = stm.executeQuery("SELECT * FROM corridas WHERE ")) {
+            while (rs.next()){
+                Corrida c = new Corrida(rs.)
+            }
+        }
+        return r;
     }
 
     @Override
@@ -226,16 +276,60 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
 
     @Override
     public Set<String> keySet() {
-        return null;
+        Set<String> res= new HashSet<>();;
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement()){
+            ResultSet rs = stm.executeQuery("SELECT nome FROM circuitos");
+            while (rs.next()) {
+                String idc = rs.getString("nome");
+                res.add(idc);
+            }
+        }
+        catch (SQLException e){
+            // Database error!
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public Collection<Campeonato> values() {
-        return null;
+        Collection<Campeonato> res = new HashSet<>();
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement();
+             ResultSet rs = stm.executeQuery("SELECT nome FROM campeonatos")) {
+            while (rs.next()) {
+                String idc = rs.getString("nome");
+                Campeonato c = this.get(idc);
+                res.add(c);
+            }
+        } catch (Exception e) {
+            // Database error!
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public Set<Entry<String, Campeonato>> entrySet() {
-        return null;
+        Map<String,Campeonato> res = new HashMap<>();
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement()){
+            ResultSet rs = stm.executeQuery("SELECT nome FROM campeonatos");
+            while (rs.next()) {
+                String idc = rs.getString("nome");
+                Campeonato c = get(idc);
+                res.put(idc,c);
+            }
+        }
+        catch (SQLException e){
+            // Database error!
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return res.entrySet();
     }
+
 }

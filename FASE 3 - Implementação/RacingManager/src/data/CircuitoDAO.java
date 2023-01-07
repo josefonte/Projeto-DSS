@@ -186,9 +186,9 @@ public class CircuitoDAO implements Map<String,Circuito>{
         Set<String> res= new HashSet<>();;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()){
-            ResultSet rs = stm.executeQuery("SELECT Nome FROM circuitos");
+            ResultSet rs = stm.executeQuery("SELECT nome FROM circuitos");
             while (rs.next()) {
-                String idc = rs.getString("Nome");
+                String idc = rs.getString("nome");
                 res.add(idc);
             }
         }
