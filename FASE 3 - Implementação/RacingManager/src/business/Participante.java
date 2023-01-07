@@ -5,26 +5,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Participante {
-    public int pontuacao;
-    public List<LocalTime> tempos;
-    public int afinacoesRestantes;
-    public int voltasTotais;
-    public int localizacaoPista;
-
-    public Carro carro;
-    public Utilizador utilizador;
+    private int id;
+    private int pontuacao;
+    private List<LocalTime> tempos;
+    private int afinacoesRestantes;
+    private int voltasTotais;
+    private int localizacaoPista;
+    private Carro carro;
+    private Utilizador utilizador;
 
     public Participante(Participante u){
+        this.setId(u.getId());
         this.setPontuacao(u.getPontuacao());
         this.setTempos(u.getTempos());
         this.setAfinacoesRestantes(u.getAfinacoesRestantes());
         this.setVoltasTotais(u.getVoltasTotais());
         this.setLocalizacaoPista(u.getLocalizacaoPista());
-        this.setCarro(u.getCarro());
-        this.setUtilizador(u.getUtilizador());
+        this.setCarro(u.getCarro().clone());
+        this.setUtilizador(u.getUtilizador().clone());
     }
     
-    public Participante(int pontuacao, List<LocalTime> tempos, int afinacoesRestantes, int voltasTotais, int localizacaoPista, Carro carro, Utilizador utilizador){
+    public Participante(int id, int pontuacao, List<LocalTime> tempos, int afinacoesRestantes, int voltasTotais, int localizacaoPista, Carro carro, Utilizador utilizador){
+        this.id = id;
         this.pontuacao = pontuacao;
         this.tempos = tempos;
         this.afinacoesRestantes = afinacoesRestantes;
@@ -33,7 +35,15 @@ public class Participante {
         this.carro = carro.clone();
         this.utilizador = utilizador.clone();
     }
+    
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public int getPontuacao() {
         return this.pontuacao;
     }
