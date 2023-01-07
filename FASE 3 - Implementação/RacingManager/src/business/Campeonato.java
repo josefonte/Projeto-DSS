@@ -136,6 +136,23 @@ public class Campeonato {
     public Corrida proximacorrida(){
         return corridas.get(corridaAtual-1);
     }
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Campeonato:  ")
+        sb.append("/ nome= " + nomeCampeonato);
+        sb.append("/ corridaAtual=" + corridaAtual);
+        sb.append("/ corridas=" + corridas);
+        sb.append("/ campParticipantes=" + campParticipantes );
+        sb.append("/ tipoCampeonato=" + tipoCampeonato  );
+        return sb.toString();
+    }
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Campeonato:  ")
+        sb.append("/ nome= " + nomeCampeonato);
+        return sb.toString();
+    }
+    
     public Campeonato clone(){
         return new Campeonato(this);
     }
