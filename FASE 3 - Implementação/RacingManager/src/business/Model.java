@@ -174,27 +174,35 @@
          return result;
       }
       
-      public void removeCampeonato(String key) {
-         if (campeonatos.containsKey(key)){
+      public Boolean removeCampeonato(String key) {
+         Boolean r = campeonatos.containsKey(key);
+         if (r){
             campeonatos.remove(key);
          }
+         return r;
       }
 
-      public void removePiloto(String key) {
-         if (pilotos.containsKey(key)){
+      public Boolean removePiloto(String key) {
+         Boolean r = pilotos.containsKey(key);
+         if (r){
             pilotos.remove(key);
          }
+         return r;
       }
 
-      public void removeCircuito(String key) {
-         if (circuitos.containsKey(key)){
+      public Boolean removeCircuito(String key) {
+         Boolean r = circuitos.containsKey(key);
+         if (r){
             circuitos.remove(key);
          }
+         return r;
       }
 
-      public void removeCarro(String key) {
-         if (carros.containsKey(key)){
+      public Boolean removeCarro(String key) {
+         Boolean r = carros.containsKey(key);
+         if (r){
             carros.remove(key);
          }
+         return r;
       }
    }
