@@ -173,4 +173,28 @@
          }
          return result;
       }
+      
+      public void removeCampeonato(String key) {
+         if (campeonatos.containsKey(key)){
+            campeonatos.remove(key);
+         }
+      }
+
+      public void removePiloto(String key) {
+         if (pilotos.containsKey(key)){
+            pilotos.remove(key);
+         }
+      }
+
+      public void removeCircuito(String key) {
+         if (circuitos.containsKey(key)){
+            circuitos.remove(key);
+         }
+      }
+
+      public void removeCarro(String key) {
+         if (carros.containsKey(key)){
+            carros.remove(key);
+         }
+      }
    }
