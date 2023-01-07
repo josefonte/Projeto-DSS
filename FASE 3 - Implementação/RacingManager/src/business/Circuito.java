@@ -103,7 +103,7 @@ public class Circuito {
         return sb.toString();
     }
     
-    public String toString() {
+    public String toSimpleString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Circuito:  ");
         sb.append("/ nomeCircuito='" + nomeCircuito );
