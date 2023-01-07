@@ -227,6 +227,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
         List<Corrida> r = new ArrayList<>();
         try(ResultSet rs = stm.executeQuery("SELECT * FROM corridas WHERE ")) {
             while (rs.next()){
+                Participante p = getUtilizadorParticipante(,stm);
                 Corrida c = new Corrida(rs.)
             }
         }
