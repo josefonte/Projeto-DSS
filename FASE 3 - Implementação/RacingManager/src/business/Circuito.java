@@ -9,10 +9,16 @@ public class Circuito {
     private String nomeCircuito;
     private List<SegmentoDePista> segmentosdepista = new ArrayList<>();
 
-    public Circuito(float distancia, String nomeCircuito, ArrayList<SegmentoDePista> segmentos) {
+    public Circuito(){
+        this.distancia = 0;
+        this.nomeCircuito = "";
+        this.segmentosdepista = new ArrayList<SegmentoDePista>();
+    }
+    
+     public Circuito(float distancia, String nomeCircuito, ArrayList<SegmentoDePista> segmentos) {
         this.distancia = distancia;
         this.nomeCircuito = nomeCircuito;
-        this.segmentosdepista = segmentos.stream().map((s)->s.clone()).collect(Collectors.toList());
+        this.setSegmentosdepista(segmentos);
     }
 
     public Circuito(Circuito c) {
@@ -41,13 +47,13 @@ public class Circuito {
         List<SegmentoDePista> seg = new ArrayList<>();
 
         for(SegmentoDePista s: this.segmentosdepista){
-            seg.add(s);
+            seg.add(s.clone());
         }
         return seg;
     }
 
     public void setSegmentosdepista(List<SegmentoDePista> segmentosdepista) {
-        this.segmentosdepista = segmentosdepista;
+        this.segmentosdepista = segmentosdepista.stream().map((s)->s.clone()).collect(Collectors.toList());
     }
 
     public void addSegmentoDePista(SegmentoDePista s){
@@ -80,8 +86,6 @@ public class Circuito {
         }
         return r;
     }
-
-
 
     public Circuito clone(){
         return new Circuito(this);
