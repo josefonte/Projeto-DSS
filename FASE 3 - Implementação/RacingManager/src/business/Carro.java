@@ -148,12 +148,19 @@ public abstract class Carro {
         StringBuilder sb = new StringBuilder();
         sb.append("Carro:  ");
         sb.append("marca = "+ marca);
-        sb.append("/ modelo = " + modelo);
-        sb.append("/ cilindrada=" + celindrada);
-        sb.append("/ potencia=" + potencia );
-        sb.append("/ fiabilidade=" + fiabilidade);
-        sb.append("/ pac=" + pac );
-        sb.append("/ id=" + id );
+        sb.append("/ modelo= " + modelo);
+        sb.append("/ cilindrada= " + celindrada);
+        sb.append("/ potencia= " + potencia );
+        sb.append("/ fiabilidade= " + fiabilidade);
+        sb.append("/ pac= " + pac );
+        sb.append("/ id= " + id );
+        return sb.toString();
+    }
+    public String toSimpleString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Carro:  ");
+        sb.append("id=" + id );
+        sb.append("/ marca= "+ marca);
         return sb.toString();
     }
 }
