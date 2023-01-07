@@ -4,7 +4,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Participante {
+
+public class Participante{
+    private int id;
     public int pontuacao;
     public List<LocalTime> tempos;
     public int afinacoesRestantes;
@@ -14,7 +16,11 @@ public class Participante {
     public Carro carro;
     public Utilizador utilizador;
 
+
+    public Piloto piloto;
+
     public Participante(Participante u){
+        this.setId(u.getId());
         this.setPontuacao(u.getPontuacao());
         this.setTempos(u.getTempos());
         this.setAfinacoesRestantes(u.getAfinacoesRestantes());
@@ -23,15 +29,21 @@ public class Participante {
         this.setCarro(u.getCarro());
         this.setUtilizador(u.getUtilizador());
     }
+
+        public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     
-    public Participante(int pontuacao, List<LocalTime> tempos, int afinacoesRestantes, int voltasTotais, int localizacaoPista, Carro carro, Utilizador utilizador){
-        this.pontuacao = pontuacao;
-        this.tempos = tempos;
-        this.afinacoesRestantes = afinacoesRestantes;
-        this.voltasTotais = voltasTotais;
-        this.localizacaoPista = localizacaoPista;
-        this.carro = carro.clone();
-        this.utilizador = utilizador.clone();
+    public Piloto getPiloto() {
+        return piloto.clone();
+    }
+
+    public void setPiloto(Piloto piloto) {
+        this.piloto = piloto;
     }
 
     public int getPontuacao() {
@@ -103,7 +115,7 @@ public class Participante {
         int total = this.getPontuacao() + pont;
         this.setPontuacao(total);
     }
-    
+
     public LocalTime tempoTotal(){
         LocalTime r = LocalTime.of(0,0,0);
         List<LocalTime> list = this.getTempos();
@@ -112,7 +124,10 @@ public class Participante {
         }
         return r;
     }
-
+    public float calculaFiabilidadeFinal(){
+        float f = carro.getFiabilidade();
+        return  f;
+    }
     public String getNome(){
         return this.getUtilizador().getNomeUtilizador();
     }

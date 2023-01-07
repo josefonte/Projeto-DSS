@@ -12,6 +12,12 @@ public class Utilizador {
         this.setPontosRanking(0);
         this.setTipoutiliador(tipoutiliador);
     }
+    
+    public Utilizador(String nomeUtilizador, TipoUtilizador tipoutiliador, int pontosRanking) {
+        this.setNomeUtilizador(nomeUtilizador);
+        this.setTipoutiliador(tipoutiliador);
+        this.setPontosRanking(pontosRanking);
+    }
 
     public Utilizador(Utilizador u){
         this.setNomeUtilizador(u.getNomeUtilizador());
