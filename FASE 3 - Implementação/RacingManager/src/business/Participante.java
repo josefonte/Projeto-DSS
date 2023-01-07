@@ -7,18 +7,37 @@ import java.util.List;
 
 public class Participante{
     private int id;
-    public int pontuacao;
-    public List<LocalTime> tempos;
-    public int afinacoesRestantes;
-    public int voltasTotais;
-    public int localizacaoPista;
+    private int pontuacao;
+    private List<LocalTime> tempos;
+    private int afinacoesRestantes;
+    private int voltasTotais;
+    private int localizacaoPista;
+    private Carro carro;
+    private Utilizador utilizador;
+    private Piloto piloto;
 
-    public Carro carro;
-    public Utilizador utilizador;
+   public Participante(){
+        this.pontuacao = 0;
+        this.tempos = new ArrayList<LocalTime>();
+        this.afinacoesRestantes = 3;
+        this.voltasTotais = 0;
+        this.localizacaoPista = 0;
+        this.carro = new C1();
+        this.utilizador = new Utilizador();
+        this.piloto = new Piloto();
+    }
 
-
-    public Piloto piloto;
-
+    public Participante(int pontuacao, List<LocalTime> tempos, int afinacoesRestantes, int voltasTotais, int localizacaoPista, Carro carro, Utilizador utilizador,Piloto piloto){
+        this.pontuacao = pontuacao;
+        this.tempos = tempos;
+        this.afinacoesRestantes = afinacoesRestantes;
+        this.voltasTotais = voltasTotais;
+        this.localizacaoPista = localizacaoPista;
+        this.carro = carro.clone();
+        this.utilizador = utilizador.clone();
+        this.piloto = piloto.clone();
+    }
+    
     public Participante(Participante u){
         this.setId(u.getId());
         this.setPontuacao(u.getPontuacao());
@@ -28,6 +47,7 @@ public class Participante{
         this.setLocalizacaoPista(u.getLocalizacaoPista());
         this.setCarro(u.getCarro());
         this.setUtilizador(u.getUtilizador());
+        this.setPiloto(u.getPiloto());
     }
 
         public int getId() {
@@ -43,7 +63,7 @@ public class Participante{
     }
 
     public void setPiloto(Piloto piloto) {
-        this.piloto = piloto;
+        this.piloto = piloto.clone();
     }
 
     public int getPontuacao() {

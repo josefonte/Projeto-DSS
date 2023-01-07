@@ -22,7 +22,8 @@ public class SC extends Carro{
 
     @Override
     public void calculaPotencia(){}
+    
     public SC clone(){
-        return this.clone();
+        return new SC(this);
     }
 }

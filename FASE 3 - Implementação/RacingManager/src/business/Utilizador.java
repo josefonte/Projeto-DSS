@@ -7,6 +7,12 @@ public class Utilizador {
     public int pontosRanking;
     private TipoUtilizador tipoutiliador;
 
+    public Utilizador (){
+        this.nomeUtilizador = "";
+        this.pontosRanking = 0;
+        this.tipoutiliador = TipoUtilizador.JOGADOR;
+    }
+    
     public Utilizador(String nomeUtilizador, TipoUtilizador tipoutiliador) {
         this.setNomeUtilizador(nomeUtilizador);
         this.setPontosRanking(0);

@@ -5,10 +5,21 @@ public class Piloto {
     private int sva;
     private int cts;
 
+    public Piloto(){
+        this.nome = "";
+        this.sva = 0;
+        this.cts = 0;
+    }
     public Piloto(String nome, int sva, int cts) {
         this.nome = nome;
         this.sva = sva;
         this.cts = cts;
+    }
+
+    public Piloto(Piloto p) {
+        this.nome = p.getNome();
+        this.sva = p.getSva();
+        this.cts = p.getCts();
     }
 
     public String getNome() {
@@ -33,5 +44,9 @@ public class Piloto {
 
     public void setCts(int cts) {
         this.cts = cts;
+    }
+    
+    public Piloto clone(){
+        return new Piloto(this);
     }
 }

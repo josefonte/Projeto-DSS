@@ -4,6 +4,11 @@ public class SegmentoDePista {
     private float distancia;
     private TipoSegmento nome;
 
+    public SegmentoDePista(){
+        this.gdu = 0;
+        this.distancia = 0;
+        this.nome = TipoSegmento.RETA;
+    }
 
     public SegmentoDePista(int gdu, float distancia, TipoSegmento nome) {
         this.distancia = distancia;
