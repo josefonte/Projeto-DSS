@@ -85,10 +85,28 @@ public class Corrida implements Serializable
             simularVolta();
         }
         simularDespistes();
+        addPontuaçãoCorrida();
     }
 
     public void addPontuaçãoCorrida(){
+        List<Participante> pList = listaClacificacao();
+        for(int i = 0 ; i<10 ; i++) {
+            Participante p = pList.get(i).clone();
+            switch (i) {
+                case 0: p.setPontuacao(25);
+                case 1: p.setPontuacao(18);
+                case 2: p.setPontuacao(15);
+                case 3: p.setPontuacao(12);
+                case 4: p.setPontuacao(10);
+                case 5: p.setPontuacao(8);
+                case 6: p.setPontuacao(6);
+                case 7: p.setPontuacao(4);
+                case 8: p.setPontuacao(2);
+                case 9: p.setPontuacao(1);
 
+            }
+            addParticipante(p.clone());
+        }
     }
 
     public void simularVolta(){
@@ -145,16 +163,11 @@ public class Corrida implements Serializable
         }
     }
 
-    public List<Participante> getListParticipantes(){
+    public List<Participante> listaClacificacao(){
         List<Participante> r = new ArrayList<>();
         for (Participante p : this.participantes.values()){
-            r.add(p);
+            r.add(p.clone());
         }
-        return r;
-    }
-
-    public List<Participante> listaClacificacao(){
-        List<Participante> r = getListParticipantes();
         Collections.sort(r, new Sortbytime());
         return r;
     }
@@ -162,5 +175,4 @@ public class Corrida implements Serializable
     public Corrida clone(){
         return new Corrida(this);
     }
-    
 }
