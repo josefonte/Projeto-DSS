@@ -10,7 +10,7 @@ import java.util.*;
 public class CampeonatoDAO implements Map<String , Campeonato> {
     private static CampeonatoDAO singleton = null;
 
-    private CampeonatoDAO() {
+    public CampeonatoDAO() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()){
             String campeonato = "CREATE TABLE IF NOT EXISTS campeonatos ("+
@@ -72,7 +72,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
             String pilotos = "CREATE TABLE IF NOT EXISTS Piloto (" +
                     "nome varchar(45) NOT NULL PRIMARY KEY," +
                     "sva INT NOT NULL,"+
-                    "cts INT NOT NULL)";;
+                    "cts INT NOT NULL)";
             stm.executeUpdate(pilotos);
             String utilizadores="CREATE TABLE IF NOT EXISTS utilizadores (" +
                     "nomeUtilizador varchar(45) NOT NULL PRIMARY KEY," +
@@ -153,7 +153,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                 //Map<String, Participante> campParticipantes = getParticipantes(key.toString(),stm);
                 Map<String, Participante> campParticipantes = new HashMap<>();
                 //TipoCampeonato tipo =
-                c = new Campeonato(nomeCampeonato,corridaAtual,corridas, campParticipantes, Enum.valueOf(TipoCampeonato.class, rs.getString("categoria"));
+                c = new Campeonato(nomeCampeonato,corridaAtual,corridas, campParticipantes, Enum.valueOf(TipoCampeonato.class, rs.getString("categoria")));
             }
         } catch (SQLException e) {
             // Database error!
@@ -171,11 +171,20 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                 List<LocalTime> tempos = getTemposParticipante(rsa.getInt("tempos"), stm);
                 Carro carro = getCarroParticipante(rsa.getInt("carro_id"), stm);
                 Utilizador utilizador = getUtilizadorParticipante(rsa.getString("utilizador_nome"),stm);
-                Participante participante = new Participante(rsa.getInt("idParticipante"), rsa.getInt("pontuacao"), rsa.getInt("afinacoesRestantes"), rsa.getInt("voltasTotais"), rsa.getInt("localizacaoPista"),tempos,carro,utilizador);
+                Piloto piloto = getPilotoParticipante(rsa.getString("piloto_nome"),stm);
+                Participante participante = new Participante(rsa.getInt("idParticipante"), rsa.getInt("pontuacao"), tempos, rsa.getInt("afinacoesRestantes"), rsa.getInt("voltasTotais"), rsa.getInt("localizacaoPista"),carro,utilizador,piloto);
                 r.put((Integer.toString(rsa.getInt("idParticipante"))),participante);
             }
         }
         return r;
+    }
+
+    private Piloto getPilotoParticipante(String pilotoNome, Statement stm) throws SQLException{
+        Piloto p = null;
+        try (ResultSet rsa = stm.executeQuery("SELECT * FROM pilotos WHERE nome='"+pilotoNome+"'")){
+            p = new Piloto(rsa.getString("nome"), rsa.getInt("sva"), rsa.getInt("cts"));
+        }
+        return p;
     }
 
     private Utilizador getUtilizadorParticipante(String utilizadorNome, Statement stm) throws SQLException{
@@ -190,21 +199,17 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
         Carro c = null;
         try(ResultSet rs = stm.executeQuery("SELECT * FROM carros WHERE id = '"+carroId+"'")){
             String categoria = rs.getString("categoria");
-            switch (categoria){
-                case "C1":
-                    c = new C1(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrida"));
-                    break;
-                case "C2":
-                    c = new C2(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrida"));
-                    break;
-                case "SC":
-                    c = new SC(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"));
-                    break;
-                case "GT":
-                    c = new GT(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrida"), rs.getInt("taxadeteorizacao"));
-                    break;
-                default:
-                    break;
+            switch (categoria) {
+                case "C1" ->
+                        c = new C1(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getInt("pac"), rs.getString("id"), rs.getInt("potenciaHibrida"));
+                case "C2" ->
+                        c = new C2(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getInt("pac"), rs.getString("id"), rs.getInt("potenciaHibrida"));
+                case "SC" ->
+                        c = new SC(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getInt("pac"), rs.getString("id"));
+                case "GT" ->
+                        c = new GT(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getInt("pac"), rs.getString("id"), rs.getInt("potenciaHibrida"), rs.getInt("taxadeteorizacao"));
+                default -> {
+                }
             }
         }
         return c;
@@ -212,7 +217,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
 
     private List<LocalTime> getTemposParticipante(int tempos, Statement stm) throws SQLException{
         List<LocalTime> r = new ArrayList<>();
-        try (ResultSet rs = stm.executeQuery("SELECT * FROM tempos WHERE id = '"+ Integer.toString(tempos) + "'")){
+        try (ResultSet rs = stm.executeQuery("SELECT * FROM tempos WHERE id = '"+ tempos + "'")){
             while(rs.next()){
                 String timeS = rs.getString("dt_value");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -227,7 +232,8 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
         List<Corrida> r = new ArrayList<>();
         try(ResultSet rs = stm.executeQuery("SELECT * FROM corridas WHERE id='"+key+"'")) {
             while (rs.next()){
-                Participante p = getUtilizadorParticipante(,stm);
+                Utilizador u = getUtilizadorParticipante(String.valueOf(rs.getInt("id")),stm);
+                //Participante p = null;
                 Circuito circuito = getCircuitoCorrida(rs.getString("circuito"),stm);
                 Map<String, Participante> participantes = new HashMap<>();
                 Corrida c = new Corrida(circuito, participantes, rs.getInt("clima"), rs.getInt("voltas"));
@@ -240,16 +246,16 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
     private Circuito getCircuitoCorrida(String circuito, Statement stm) throws SQLException{
         Circuito c = null;
         try(ResultSet rs = stm.executeQuery("SELECT * FROM circuitos WHERE nome = '"+circuito+"´")){
-            List<SegmentoDePista> segmentos = getSegmentos(rs.getString("nome"),stm)
-            c = new Circuito(rs.getFloat("distancia"), rs.getString("nome"),segmentos,);
+            ArrayList<SegmentoDePista> segmentos = getSegmentos(rs.getString("nome"),stm);
+            c = new Circuito(rs.getFloat("distancia"), rs.getString("nome"),segmentos);
         }
         return c;
     }
 
-    private List<SegmentoDePista> getSegmentos(String nome, Statement stm) throws SQLException{
-        List<SegmentoDePista> segs = null;
+    private ArrayList<SegmentoDePista> getSegmentos(String nome, Statement stm) throws SQLException{
+        ArrayList<SegmentoDePista> segs = new ArrayList<>();
         try(ResultSet rs = stm.executeQuery("SELECT * FROM segmentos WHERE nomecircuito = '"+nome+"´")){
-            SegmentoDePista seg = new SegmentoDePista(rs.getInt("gdu"), rs.getFloat("distancia"),Enum.valueOf(TipoSegmento.class, rs.getString("TipoSegmento"))); );
+            SegmentoDePista seg = new SegmentoDePista(rs.getInt("gdu"), rs.getFloat("distancia"),Enum.valueOf(TipoSegmento.class, rs.getString("TipoSegmento")));
             segs.add(seg);
         }
         return segs;
@@ -257,7 +263,34 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
 
     @Override
     public Campeonato put(String s, Campeonato campeonato) {
-        return null;
+        Campeonato t = null;
+        ArrayList<Corrida> c = (ArrayList<Corrida>) campeonato.getCorridas();
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement()) {
+            stm.executeUpdate(
+                    "INSERT INTO campeonatos " +
+                            "VALUES ('"+ campeonato.getNomeCampeonato()+ "', "+
+                            campeonato.getCorridaAtual()+") "+
+                            "ON DUPLICATE KEY UPDATE corridaAtual = values(corridaAtual) "+
+                            "ON DUPLICATE KEY UPDATE categoria = Values(categoria) "
+            );
+            for(Corrida key : c) {
+                stm.executeUpdate("DELETE FROM corridas WHERE id='" + key + "'");
+            }
+            for (int i=0; i<c.size();i++){
+                Corrida corrida = c.get(i);
+                stm.executeUpdate("INSERT INTO corridas " +
+                        "VALUES ("+i+"', '"+
+                        corrida.getVoltas()+"', '"+
+                        corrida.getClima()+"', '"+
+                        corrida.getCircuito()+") ");
+            }
+        } catch (SQLException e) {
+            // Database error!
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return t;
     }
 
     @Override
@@ -279,7 +312,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
 
     @Override
     public void putAll(Map<? extends String, ? extends Campeonato> map) {
-
+        for(Campeonato c: map.values()) this.put(c.getNomeCampeonato(),c);
     }
 
     @Override
@@ -298,7 +331,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
 
     @Override
     public Set<String> keySet() {
-        Set<String> res= new HashSet<>();;
+        Set<String> res= new HashSet<>();
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()){
             ResultSet rs = stm.executeQuery("SELECT nome FROM circuitos");

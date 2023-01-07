@@ -27,8 +27,9 @@ public class Participante{
         this.piloto = new Piloto();
     }
 
-    public Participante(int pontuacao, List<LocalTime> tempos, int afinacoesRestantes, int voltasTotais, int localizacaoPista, Carro carro, Utilizador utilizador,Piloto piloto){
-        this.pontuacao = pontuacao;
+    public Participante(int id ,int pontuacao, List<LocalTime> tempos, int afinacoesRestantes, int voltasTotais, int localizacaoPista, Carro carro, Utilizador utilizador,Piloto piloto){
+       this.id = id;
+       this.pontuacao = pontuacao;
         this.tempos = tempos;
         this.afinacoesRestantes = afinacoesRestantes;
         this.voltasTotais = voltasTotais;
