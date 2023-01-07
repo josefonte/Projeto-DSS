@@ -50,7 +50,7 @@ public class GT extends Carro{
     }
 
     public GT clone(){
-        return this.clone();
+        return new GT(this);
     }
 
 }
