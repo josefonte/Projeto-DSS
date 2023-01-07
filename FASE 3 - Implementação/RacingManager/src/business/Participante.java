@@ -4,46 +4,38 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Participante {
-    private int id;
-    private int pontuacao;
-    private List<LocalTime> tempos;
-    private int afinacoesRestantes;
-    private int voltasTotais;
-    private int localizacaoPista;
-    private Carro carro;
-    private Utilizador utilizador;
+
+public class Participante{
+    public int pontuacao;
+    public List<LocalTime> tempos;
+    public int afinacoesRestantes;
+    public int voltasTotais;
+    public int localizacaoPista;
+
+    public Carro carro;
+    public Utilizador utilizador;
+
+
+    public Piloto piloto;
 
     public Participante(Participante u){
-        this.setId(u.getId());
         this.setPontuacao(u.getPontuacao());
         this.setTempos(u.getTempos());
         this.setAfinacoesRestantes(u.getAfinacoesRestantes());
         this.setVoltasTotais(u.getVoltasTotais());
         this.setLocalizacaoPista(u.getLocalizacaoPista());
-        this.setCarro(u.getCarro().clone());
-        this.setUtilizador(u.getUtilizador().clone());
-    }
-    
-    public Participante(int id, int pontuacao, List<LocalTime> tempos, int afinacoesRestantes, int voltasTotais, int localizacaoPista, Carro carro, Utilizador utilizador){
-        this.id = id;
-        this.pontuacao = pontuacao;
-        this.tempos = tempos;
-        this.afinacoesRestantes = afinacoesRestantes;
-        this.voltasTotais = voltasTotais;
-        this.localizacaoPista = localizacaoPista;
-        this.carro = carro.clone();
-        this.utilizador = utilizador.clone();
-    }
-    
-    public int getId() {
-        return id;
+        this.setCarro(u.getCarro());
+        this.setUtilizador(u.getUtilizador());
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Piloto getPiloto() {
+        return piloto.clone();
     }
-    
+
+    public void setPiloto(Piloto piloto) {
+        this.piloto = piloto;
+    }
+
     public int getPontuacao() {
         return this.pontuacao;
     }
@@ -113,7 +105,7 @@ public class Participante {
         int total = this.getPontuacao() + pont;
         this.setPontuacao(total);
     }
-    
+
     public LocalTime tempoTotal(){
         LocalTime r = LocalTime.of(0,0,0);
         List<LocalTime> list = this.getTempos();
@@ -122,7 +114,10 @@ public class Participante {
         }
         return r;
     }
-
+    public float calculaFiabilidadeFinal(){
+        float f = carro.getFiabilidade();
+        return  f;
+    }
     public String getNome(){
         return this.getUtilizador().getNomeUtilizador();
     }

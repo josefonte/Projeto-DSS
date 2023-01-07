@@ -5,28 +5,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Campeonato {
-    private String nomeCampeonato;
-    private int corridaAtual;
-    private List<Corrida> corridas;
-    private Map<String,Participante> campParticipantes;
+    public String nomeCampeonato;
+    public int corridaAtual;
+    public List<Corrida> corridas;
+    public Map<String,Participante> campParticipantes;
 
-    public Campeonato(String nomeCampeonato, int corridaAtual, List<Corrida> corridas, Map<String, Participante> campParticipantes) {
-        this.nomeCampeonato=nomeCampeonato;
-        this.corridaAtual=corridaAtual;
-        this.corridas=corridas;
-        this.campParticipantes=campParticipantes;
+    public Compeonato(String nome,int corAtual,List<Corrida> cor, Map<String, Participante> participantes) {
+        
     }
     
-    public Campeonato(Campeonato c){
-        this.setNomeCampeonato(c.getNomeCampeonato());
-        this.setCorridaAtual(c.getCorridaAtual());
-        this.setCorridas(c.getCorridas());
-        this.setCampParticipantes(c.getCampParticipantes());
-    }
-
     public String getNomeCampeonato() {
         return nomeCampeonato;
-    }
+    }Campeonato
 
     public void setNomeCampeonato(String nomeCampeonato) {
         this.nomeCampeonato = nomeCampeonato;
@@ -41,46 +31,50 @@ public class Campeonato {
     }
 
     public List<Corrida> getCorridas() {
-        return new ArrayList<Corrida>(corridas);
+        List<Corrida> r = new ArrayList<>();
+
+        for (Corrida c : this.corridas){
+            r.add(c.clone());
+        }
+        return r;
     }
 
     public void setCorridas(List<Corrida> corridas) {
-        this.corridas = new ArrayList<Corrida>();
+        this.corridas = new ArrayList<>();
         for (Corrida c : corridas){
-            this.corridas.add(c);
+            this.corridas.add(c.clone());
         }
     }
 
     public void addCorrida(Corrida corrida){
-        ArrayList<Corrida> res = this.getCorridas();
-        res.add(corrida);
-        this.setCorridas(res);
+        this.corridas.add(corrida.clone());
     }
     public Map<String, Participante> getCampParticipantes() {
         Map<String, Participante> res = new HashMap<String,Participante>();
-        for (Map.Entry<String,Participante> e : this.campParticipantes.entrySet()){
-            res.put(e.getKey(),e.getValue().clone());
+        for(Participante p : this.campParticipantes.values()){
+            res.put(p.getNome(),p.clone());
         }
         return res;
     }
 
     public void setCampParticipantes(Map<String, Participante> campParticipantes) {
         this.campParticipantes = new HashMap<String,Participante>();
-        Iterator<Map.Entry<String,Participante>> it = campParticipantes.entrySet().iterator();
-        while (it.hasNext()){
-            Map.Entry<String,Participante> aux = it.next();
-            this.campParticipantes.put(aux.getKey(),aux.getValue());
+        for(Participante p : campParticipantes.values()){
+            this.campParticipantes.put(p.getNome(),p.clone());
         }
     }
 
     public void addParticipante(Participante participante){
-        Map<String, Participante> res = this.getCampParticipantes();
-        res.put(participante.getUtilizador().getNomeUtilizador(),participante.clone());
-        this.setCampParticipantes(res);
+        this.campParticipantes.put(participante.getNome(),participante.clone());
     }
 
-    private void atualizarParticipantes(List<Participante> update){
+    private void atualizarParticipantes(Corrida corrida){
 
+    }
+
+    private void simularCorrida(){
+        Corrida c = this.corridas.get(corridaAtual);
+        c.simularCorrida();
     }
 
     public List<Participante> classificacaoFinal(){
