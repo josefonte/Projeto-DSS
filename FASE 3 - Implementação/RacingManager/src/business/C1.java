@@ -34,8 +34,9 @@ public class C1 extends Carro {
     public void calculaPotencia() {
         setPotencia(getPotenciaHibrida()+getPotencia());
     }
+    
     public C1 clone(){
-        return new this.clone();
+        return new C1(this);
     }
 
 }
