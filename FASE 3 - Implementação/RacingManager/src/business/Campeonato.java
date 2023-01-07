@@ -5,16 +5,23 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Campeonato {
-    public String nomeCampeonato;
-    public int corridaAtual;
-    public List<Corrida> corridas;
-    public Map<String,Participante> campParticipantes;
+    private String nomeCampeonato;
+    private int corridaAtual;
+    private List<Corrida> corridas;
+    private Map<String,Participante> campParticipantes;
 
     public Campeonato(String nomeCampeonato, int corridaAtual, List<Corrida> corridas, Map<String, Participante> campParticipantes) {
         this.nomeCampeonato=nomeCampeonato;
         this.corridaAtual=corridaAtual;
         this.corridas=corridas;
         this.campParticipantes=campParticipantes;
+    }
+    
+    public Campeonato(Campeonato c){
+        this.setNomeCampeonato(c.getNomeCampeonato());
+        this.setCorridaAtual(c.getCorridaAtual());
+        this.setCorridas(c.getCorridas());
+        this.setCampParticipantes(c.getCampParticipantes());
     }
 
     public String getNomeCampeonato() {
