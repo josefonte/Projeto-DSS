@@ -50,9 +50,16 @@ public class Piloto {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Piloto:  ");
-        sb.append("nome='" + nome );
+        sb.append("nome=" + nome );
         sb.append("/ sva=" + sva );
         sb.append("/ cts=" + cts);
+        return sb.toString();
+    }
+    
+    public String toSimpleString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Piloto:  ");
+        sb.append("nome='" + nome );
         return sb.toString();
     }
 
