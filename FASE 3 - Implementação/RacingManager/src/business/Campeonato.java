@@ -121,7 +121,7 @@ public class Campeonato {
         return r;
     }
 
-    private int calculaAfinacoes(){
+    public int calculaAfinacoes(){
         int s = this.getCorridas().size();
         int max = Math.round((2*s) /3);
         Map<String, Participante> old = this.getCampParticipantes();
@@ -132,6 +132,9 @@ public class Campeonato {
         }
         this.setCampParticipantes(res);
         return max;
+    }
+    public Corrida proximacorrida(){
+        return corridas.get(corridaAtual-1);
     }
     public Campeonato clone(){
         return new Campeonato(this);
