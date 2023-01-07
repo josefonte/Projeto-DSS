@@ -6,6 +6,7 @@ import java.util.List;
 
 
 public class Participante{
+    private int id;
     public int pontuacao;
     public List<LocalTime> tempos;
     public int afinacoesRestantes;
@@ -19,6 +20,7 @@ public class Participante{
     public Piloto piloto;
 
     public Participante(Participante u){
+        this.setId(u.getId());
         this.setPontuacao(u.getPontuacao());
         this.setTempos(u.getTempos());
         this.setAfinacoesRestantes(u.getAfinacoesRestantes());
@@ -28,6 +30,14 @@ public class Participante{
         this.setUtilizador(u.getUtilizador());
     }
 
+        public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public Piloto getPiloto() {
         return piloto.clone();
     }
