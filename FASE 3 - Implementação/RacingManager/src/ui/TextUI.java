@@ -1,32 +1,47 @@
-package ui;
+/*
+ *  DISCLAIMER: Este código foi criado para discussão e edição durante as aulas práticas de DSS, representando
+ *  uma solução em construção. Como tal, não deverá ser visto como uma solução canónica, ou mesmo acabada.
+ *  É disponibilizado para auxiliar o processo de estudo. Os alunos são encorajados a testar adequadamente o
+ *  código fornecido e a procurar soluções alternativas, à medida que forem adquirindo mais conhecimentos.
+ */
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 public class TextUI  {
     // O model tem a 'lógica de negócio'.
-    //private FacadeRaceManager
+    //private FacadeR
+    //
+    // aceManager
 
     private List<String> carros = new ArrayList<>();
     private List<String> pilotos = new ArrayList<>();
     private List<String> circuitos = new ArrayList<>();
+    private List<String> campeonatos = new ArrayList<>();
     private Menu menu;
     private  boolean Admin;
-
     private Scanner is;
 
-    /**
-     * Construtor.
-     *
-     * Cria os menus e a camada de negócio.
-     */
     public TextUI() {
         // Criar o menu
+
+        for (int i=0; i<20; i++){
+            campeonatos.add("campeonato"+i);
+        }
+        for (int i=0; i<20; i++){
+            circuitos.add("circuito"+i);
+        }
+        for (int i=0; i<20; i++){
+            pilotos.add("Piloto"+i);
+        }
+        for (int i=0; i<20; i++){
+            carros.add("Carros"+i);
+        }
+
         this.menu = new Menu(new String[]{
                 "Modo Admin",
                 "Modo Jogador",
                 "Criar User"
-
         });
 
         this.menu.setHandler(1,this::MenuPrincipal_Admin);
@@ -62,9 +77,10 @@ public class TextUI  {
                 "Editar Carros"
         },true);
 
-        menuP.setHandler(1, this::MenuPilotos_Admin);
+        menuP.setHandler(1, this::MenuCampeonatos_Admin);
         menuP.setHandler(2, this::MenuCircuitos_Admin);
-        menuP.setHandler(3, this::MenuCarros_Admin);
+        menuP.setHandler(3, this::MenuPilotos_Admin);
+        menuP.setHandler(4, this::MenuCarros_Admin);
         menuP.run();
     }
 
@@ -77,13 +93,19 @@ public class TextUI  {
                 "Remover Campeonato"
         },true);
 
+        menuP.setHandler(1, this::ListaCampeonatos);
+        menuP.setHandler(3, this::AdicionarCampeonato);
+        menuP.setHandler(4, this::RemoverCampeonato);
         menuP.run();
     }
     public void MenuCampeonatos_User() {
         // Criar o menu
         Menu menuP = new Menu("Menu dos Campeonatos" , new String[]{
                 "Ver lista de Campeonatos",
+                "Consultar info de um campeonato"
         },true);
+
+        menuP.setHandler(1, this::ListaCampeonatos);
 
         menuP.run();
     }
@@ -96,16 +118,22 @@ public class TextUI  {
                 "Adicionar Circuito",
                 "Remover Circuito",
         },true);
+
+        menuP.setHandler(1, this::ListaCircuitos);
+        menuP.setHandler(3, this::AdicionarCircuito);
+        menuP.setHandler(4, this::RemoverCircuito);
+
         menuP.run();
     }
 
     public void MenuCircuitos_User() {
         // Criar o menu
         Menu menuP = new Menu("Menu dos Circuitos" , new String[]{
-                "Ver lista de Circuitos",
-                "Voltar"
+                "Ver lista de Circuitos"
         });
-        menuP.setHandler(2, this::MenuPrincipal_Admin);
+
+        menuP.setHandler(1, this::ListaCircuitos);
+        menuP.run();
     }
 
     public void MenuPilotos_Admin() {
@@ -117,6 +145,9 @@ public class TextUI  {
                 "Remover Piloto"
         },true);
 
+        menuP.setHandler(1, this::ListaPilotos);
+        menuP.setHandler(3, this::AdicionarPiloto);
+        menuP.setHandler(4, this::RemoverPiloto);
         menuP.run();
     }
     public void MenuPilotos_User() {
@@ -126,6 +157,8 @@ public class TextUI  {
                 "Consultar Info de um Piloto"
         },true);
 
+        menuP.setHandler(1, this::ListaPilotos);
+
         menuP.run();
     }
 
@@ -134,9 +167,13 @@ public class TextUI  {
         Menu menuP = new Menu("Menu de Carros",new String[]{
                 "Ver lista de Carros",
                 "Consultar Info de um Carro",
-                "Adicionar Carros",
-                "Remover Carros",
+                "Adicionar Carro",
+                "Remover Carro",
         },true);
+
+        menuP.setHandler(1, this::ListaCarros);
+        menuP.setHandler(3, this::AdicionarCarro);
+        menuP.setHandler(4, this::RemoverCarro);
 
         menuP.run();
     }
@@ -158,18 +195,13 @@ public class TextUI  {
          System.out.println("Jogando >-<");
     }
 
-    public void ListaCircuitos(){
+    public void ListaCampeonatos(){
         try {
-            for (int i=0; i<20; i++) {
-                circuitos.add("Circuito" + i);
+            System.out.println("\n# Lista de Campeonatos #");
+            for (String campeonato : campeonatos){
+                System.out.println(campeonato);
             }
-            System.out.println("\n# Lista de Circuitos #");
-            for (String circuito : circuitos){
-                System.out.println(circuito);
-            }
-
             //model.getCarros()
-
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -177,12 +209,58 @@ public class TextUI  {
 
     }
 
-    public void AdicionaCircuito(){
+    public void AdicionarCampeonato(){
+        try {
+            is = new Scanner(System.in);
+            System.out.println("Nome do Campeonato: ");
+            String nome = is.nextLine();
+
+            //construtor de circuito Circuito circuito = new Circuito(nome,dist);
+            //model.circuitos.add(circuito)
+            campeonatos.add(nome);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void RemoverCampeonato(){
+        try {
+            ListaCircuitos();
+            System.out.println("Nome do Campeonato a Remover:");
+            is = new Scanner(System.in);
+            String nome = is.nextLine();
+            circuitos.remove(nome);
+
+            //model.removeCarro
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+
+    public void ListaCircuitos(){
+        try {
+
+            System.out.println("\n# Lista de Circuitos #");
+            for (String circuito : circuitos){
+                System.out.println(circuito);
+            }
+            //model.getCarros()
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void AdicionarCircuito(){
         try {
             is = new Scanner(System.in);
             System.out.println("Nome do Circuito: ");
             String nome = is.nextLine();
-            is.nextLine();
             System.out.println("Distância do Circuito: ");
             Float dist = is.nextFloat();
 
@@ -195,7 +273,7 @@ public class TextUI  {
         }
     }
 
-    public void RemoveCircuito(){
+    public void RemoverCircuito(){
         try {
             ListaCircuitos();
             System.out.println("Nome do Circuito a Remover:");
@@ -212,9 +290,7 @@ public class TextUI  {
 
     public void ListaPilotos(){
         try {
-            for (int i=0; i<20; i++){
-                pilotos.add("Piloto"+i);
-            }
+
             System.out.println("\n# Lista de Pilotos #");
             for (String piloto : pilotos){
                 System.out.println(piloto);
@@ -227,7 +303,7 @@ public class TextUI  {
 
     }
 
-    public void AdicionaPiloto(){
+    public void AdicionarPiloto(){
         try {
             is = new Scanner(System.in);
             System.out.println("Nome do Piloto: ");
@@ -247,7 +323,7 @@ public class TextUI  {
         }
     }
 
-    public void RemovePiloto(){
+    public void RemoverPiloto(){
         try {
             ListaCircuitos();
             is = new Scanner(System.in);
@@ -265,22 +341,17 @@ public class TextUI  {
 
     public void ListaCarros(){
         try {
-            for (int i=0; i<20; i++){
-                carros.add("Carro"+i);
-            }
             System.out.println("\n# Lista de Carros #");
             for (String carro : carros){
                 System.out.println(carro);
             }
-
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
-
     }
 
-    public void AdicionaCarro(){
+    public void AdicionarCarro(){
         try {
             is = new Scanner(System.in);
             System.out.println("Marca: ");
@@ -297,28 +368,25 @@ public class TextUI  {
             int pac = is.nextInt();
             System.out.println("id: ");
             String id = is.nextLine();
-            is.nextLine();
             System.out.println("Pneus (Macio-Duro-Chuva): ");
-            String pneus = is.nextLine();
+            String p = is.nextLine();
 
-            if (pneus.equals("MACIO") || pneus.equals("macio") ||pneus.equals("Macio")) pneus = "MACIO"; //TipoPneus pneus = TipoPneus.MACIO;
-            else if (pneus.equals("DURO") || pneus.equals("duro") || pneus.equals("Duro")) pneus = "DURO"; //TipoPneus pneus = TipoPneus.DURO;
-            else if (pneus.equals("CHUVA") || pneus.equals("chuva") ||pneus.equals("Chuva")) pneus = "CHUVA";//TipoPneus pneus = TipoPneus.CHUVA;
-            else //TipoPneus pneus = TipoPneus.MACIO;
-            is.nextLine();
+            String pneus = switch (p){//TipoPneus pneus = switch (p) {
+                case "MACIO", "macio", "Macio" -> "MACIO"; //TipoPneus.MACIO;
+                case "DURO", "duro", "Duro" -> "DURO"; //TipoPneus.DURO;
+                case "CHUVA", "chuva", "Chuva" -> "CHUVA";//TipoPneus.CHUVA;
+                default -> "MACIO";
+            };
 
             System.out.println("Modo Motor (Conservador-Normal-Agressivo): ");
-            is.nextLine();
-            String motor = is.nextLine();
-            String mot = switch (motor) {//ModoMotor motor =
+            String mot = is.nextLine();
+            String motor = switch (mot) {//ModoMotor motor =
                 case "CONSERVADOR", "conservador", "Conservador" ->
                         "CONSERVADOR"; //ModoMotor.CONSERVADOR
                 case "NORMAL", "normal", "Normal" -> "NORMAL"; //ModoMotor.NORMAL
                 case "AGRESSIVO", "agressivo", "Agressivo" -> "AGRESSIVO"; //ModoMotor.AGRESSIVO
                 default -> "NORMAL"; //ModoMotor.NORMAL
             };
-
-            is.nextLine();
 
             System.out.println("Categoria (C1-C2-GT-SC): ");
             String cat = is.nextLine();
@@ -335,7 +403,6 @@ public class TextUI  {
             //new Carro( categoria, marca,  modelo, cilindrada, potencia, fiabilidade, pac, id, pneus, motor)
             //model.addCarro()
             carros.add(modelo);
-
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -343,7 +410,7 @@ public class TextUI  {
 
     }
 
-    public void RemoveCarro(){
+    public void RemoverCarro(){
         try {
             ListaCircuitos();
             System.out.println("Nome do Carro a Remover:");
