@@ -26,6 +26,12 @@ public class Circuito {
         this.nomeCircuito = c.getNomeCircuito();
         this.segmentosdepista = c.getSegmentosdepista();
     }
+    public Circuito(String nome, float distancia){
+        this.distancia=distancia;
+        this.nomeCircuito=nome;
+        this.segmentosdepista = new ArrayList<SegmentoDePista>();
+        this.calculaSegmentos();
+    }
 
     public float getDistancia() {
         return distancia;
