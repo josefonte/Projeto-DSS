@@ -102,6 +102,13 @@ public class Circuito {
         sb.append("/ segmentosdepista=" + segmentosdepista);
         return sb.toString();
     }
+    
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Circuito:  ");
+        sb.append("/ nomeCircuito='" + nomeCircuito );
+        return sb.toString();
+    }
 
     public Circuito clone(){
         return new Circuito(this);
