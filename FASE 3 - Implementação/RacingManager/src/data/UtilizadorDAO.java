@@ -107,15 +107,15 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
 
     @Override
     public Utilizador put(String s, Utilizador utilizador) {
-        Utilizador res = null;
+        Utilizador res;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
 
             stm.executeUpdate(
                     "INSERT INTO utilizadores " +
-                            "VALUES ('"+ res.getNomeUtilizador()+ "', '"+
-                            res.getPontosRanking()+"', "+
-                            res.getTipoutiliador()+") ");
+                            "VALUES ('"+ utilizador.getNomeUtilizador()+ "', '"+
+                            utilizador.getPontosRanking()+"', "+
+                            utilizador.getTipoutiliador()+") ");
             res = get(s);
         } catch (SQLException e) {
             // Database error!

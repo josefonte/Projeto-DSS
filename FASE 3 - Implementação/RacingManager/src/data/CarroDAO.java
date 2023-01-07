@@ -133,35 +133,35 @@ public class CarroDAO implements Map<String, Carro> {
 
     @Override
     public Carro put(String s, Carro carro) {
-        Carro res = null;
+        Carro res;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
-            String id = res.getId();
-            String categoria = res.getCategoria();
-            String modelo = res.getModelo();
-            String marca = res.getMarca();
-            int cilindradaint = res.getCelindrada();
+            String id = carro.getId();
+            String categoria = carro.getCategoria();
+            String modelo = carro.getModelo();
+            String marca = carro.getMarca();
+            int cilindradaint = carro.getCelindrada();
             String cilindrada = Integer.toString(cilindradaint);
-            String potencia = Integer.toString(res.getPotencia());
-            String fiabilidade = Float.toString(res.getFiabilidade());
-            String pac = Integer.toString(res.getPac());
-            String tipoPneus = res.getPneus().toString();
-            String modoMotor = res.getMotor().toString();
+            String potencia = Integer.toString(carro.getPotencia());
+            String fiabilidade = Float.toString(carro.getFiabilidade());
+            String pac = Integer.toString(carro.getPac());
+            String tipoPneus = carro.getPneus().toString();
+            String modoMotor = carro.getMotor().toString();
             // Actualizar a Sala
             String potenciaHibrida = null;
             String taxaDeteorizacao = null;
             switch(categoria){
                 case "C1":
-                    potenciaHibrida = Integer.toString(((C1) res).getPotenciaHibrida());
+                    potenciaHibrida = Integer.toString(((C1) carro).getPotenciaHibrida());
                     break;
                 case "C2":
-                    potenciaHibrida = Integer.toString(((C2) res).getPotenciaHibrida());
+                    potenciaHibrida = Integer.toString(((C2) carro).getPotenciaHibrida());
                     break;
                 case "SC":
                     break;
                 case "GT":
-                    potenciaHibrida = Integer.toString(((C1) res).getPotenciaHibrida());
-                    taxaDeteorizacao= Integer.toString(((GT) res).getTaxaDeteorizacao());
+                    potenciaHibrida = Integer.toString(((C1) carro).getPotenciaHibrida());
+                    taxaDeteorizacao= Integer.toString(((GT) carro).getTaxaDeteorizacao());
                     break;
                 default:
                     break;

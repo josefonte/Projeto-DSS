@@ -115,9 +115,9 @@ public class PilotoDAO implements Map<String, Piloto> {
             // Actualizar a Sala
             stm.executeUpdate(
                     "INSERT INTO pilotos " +
-                            "VALUES ('"+ res.getNome()+ "', '"+
-                            res.getSva()+"', "+
-                            res.getCts()+") " +
+                            "VALUES ('"+ piloto.getNome()+ "', '"+
+                            piloto.getSva()+"', "+
+                            piloto.getCts()+") " +
                             "ON DUPLICATE KEY UPDATE sva=Values(sva), " +
                             "cts=Values(cts)");
 
