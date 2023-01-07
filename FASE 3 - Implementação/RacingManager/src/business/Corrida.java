@@ -179,11 +179,17 @@ public class Corrida implements Serializable
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Circuito:  ");
+        sb.append("Corrida:  ");
         sb.append("/ circuito=" + circuito);
         sb.append("/ participantes=" + participantes);
         sb.append("/ clima=" + clima );
         sb.append("/ voltas=" + voltas  );
+        return sb.toString();
+    }
+    public String toSimpleString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Corrida:  ");
+        sb.append("/ circuito=" + circuito);
         return sb.toString();
     }
 
