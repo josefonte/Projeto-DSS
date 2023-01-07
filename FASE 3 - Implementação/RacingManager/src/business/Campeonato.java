@@ -17,6 +17,7 @@ public class Campeonato {
         this.corridaAtual = 0;
         this.corridas = new ArrayList<Corrida>();
         this.campParticipantes = new HashMap<String, Participante>();
+        this.tipoCampeonato = TipoCampeonato.C1;
     }
     
     public Campeonato(String nome,int corAtual,List<Corrida> cor, Map<String, Participante> participantes,TipoCampeonato tipoCamp) {
