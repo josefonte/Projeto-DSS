@@ -1,8 +1,6 @@
 package business;
 
-import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Campeonato {
     private String nomeCampeonato;
@@ -15,7 +13,7 @@ public class Campeonato {
     public Campeonato(){
         this.nomeCampeonato = "";
         this.corridaAtual = 0;
-        this.corridas = new ArrayList<Corrida>();
+        this.corridas = new ArrayList<>();
         this.campParticipantes = new HashMap<String, Participante>();
         this.tipoCampeonato = TipoCampeonato.C1;
     }
@@ -35,8 +33,15 @@ public class Campeonato {
         this.campParticipantes = c.getCampParticipantes();
         this.tipoCampeonato = c.getTipoCampeonato();
     }
-    
-    
+
+    public TipoCampeonato getTipoCampeonato() {
+        return tipoCampeonato;
+    }
+
+    public void setTipoCampeonato(TipoCampeonato tipoCampeonato) {
+        this.tipoCampeonato = tipoCampeonato;
+    }
+
     public String getNomeCampeonato() {
         return nomeCampeonato;
     }
@@ -118,14 +123,12 @@ public class Campeonato {
 
     private int calculaAfinacoes(){
         int s = this.getCorridas().size();
-        int max = Math.round(s * (2/3));
+        int max = Math.round((2*s) /3);
         Map<String, Participante> old = this.getCampParticipantes();
         Map<String, Participante> res = new HashMap<String,Participante>();
-        Iterator<Map.Entry<String,Participante>> it = old.entrySet().iterator();
-        while (it.hasNext()){
-            Map.Entry<String,Participante> aux = it.next();
+        for (Map.Entry<String, Participante> aux : old.entrySet()) {
             aux.getValue().setAfinacoesRestantes(max);
-            res.put(aux.getKey(),aux.getValue());
+            res.put(aux.getKey(), aux.getValue());
         }
         this.setCampParticipantes(res);
         return max;
