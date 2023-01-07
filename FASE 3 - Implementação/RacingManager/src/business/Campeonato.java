@@ -146,7 +146,7 @@ public class Campeonato {
         sb.append("/ tipoCampeonato=" + tipoCampeonato  );
         return sb.toString();
     }
-    public String toString() {
+    public String toSimpleString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Campeonato:  ")
         sb.append("/ nome= " + nomeCampeonato);
