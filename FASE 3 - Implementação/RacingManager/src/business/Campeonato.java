@@ -5,23 +5,36 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Campeonato {
-    public String nomeCampeonato;
-    public int corridaAtual;
-    public List<Corrida> corridas;
-    public Map<String,Participante> campParticipantes;
+    private String nomeCampeonato;
+    private int corridaAtual;
+    private List<Corrida> corridas;
+    private Map<String,Participante> campParticipantes;
 
-    public TipoCampeonato tipoCampeonato;
+    private TipoCampeonato tipoCampeonato;
 
+    public Campeonato(){
+        this.nomeCampeonato = "";
+        this.corridaAtual = 0;
+        this.corridas = new ArrayList<Corrida>();
+        this.campParticipantes = new HashMap<String, Participante>();
+    }
+    
     public Campeonato(String nome,int corAtual,List<Corrida> cor, Map<String, Participante> participantes,TipoCampeonato tipoCamp) {
         this.nomeCampeonato = nome;
         this.corridaAtual = corAtual;
-        this.corridas =  cor.stream().map((s)->s.clone()).collect(Collectors.toList());
-        this.campParticipantes = new HashMap<String,Participante>();
-        for(Participante p : participantes.values()){
-            this.campParticipantes.put(p.getNome(),p.clone());
-        }
+        this.setCorridas(cor);
+        this.setCampParticipantes(participantes);
         this.tipoCampeonato = tipoCamp;
     }
+    
+    public Campeonato(Campeonato c){
+        this.nomeCampeonato = c.getNomeCampeonato();
+        this.corridaAtual = c.getCorridaAtual();
+        this.corridas = c.getCorridas();
+        this.campParticipantes = c.getCampParticipantes();
+        this.tipoCampeonato = c.getTipoCampeonato()
+    }
+    
     
     public String getNomeCampeonato() {
         return nomeCampeonato;
@@ -115,5 +128,8 @@ public class Campeonato {
         }
         this.setCampParticipantes(res);
         return max;
+    }
+    public Campeonato clone(){
+        return new Campeonato(this);
     }
 }
