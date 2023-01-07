@@ -16,12 +16,16 @@ public class Corrida implements Serializable
     private int voltas;
 
 
+    public Corrida(){
+        this.circuito = new Circuito();
+        this.participantes = new HashMap<String, Participante>();
+        this.clima = 0;
+        this.voltas = 0;
+    }
+
     public Corrida(Circuito circuito, Map<String, Participante> participantes, int clima, int voltas) {
-        this.circuito = new Circuito(circuito);
-        this.participantes = new HashMap<String,Participante>();
-        for(Participante p : participantes.values()){
-            this.participantes.put(p.getNome(),p.clone());
-        }
+        this.circuito = circuito.clone();
+        this.setParticipantes(participantes);
         this.clima = clima;
         this.voltas = voltas;
     }
