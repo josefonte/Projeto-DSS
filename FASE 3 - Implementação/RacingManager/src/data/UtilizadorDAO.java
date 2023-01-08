@@ -79,7 +79,7 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
              ResultSet rs =
-                     stm.executeQuery("SELECT Id FROM utilizadores WHERE id='"+key.toString()+"'")) {
+                     stm.executeQuery("SELECT nomeUtilizador FROM utilizadores WHERE nomeUtilizador='"+key.toString()+"'")) {
             r = rs.next();
         } catch (SQLException e) {
             // Database error!
@@ -100,7 +100,7 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
         Utilizador u = null;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
-             ResultSet rs = stm.executeQuery("SELECT * FROM utilizadores WHERE id='" + key + "'")) {
+             ResultSet rs = stm.executeQuery("SELECT * FROM utilizadores WHERE nomeUtilizador='" + key + "'")) {
             if (rs.next()) {
                     u = new Utilizador(rs.getString("nomeUtilizador"), Enum.valueOf(TipoUtilizador.class, rs.getString("tipoUtilizador")));
             }

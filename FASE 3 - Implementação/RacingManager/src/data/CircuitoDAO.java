@@ -76,7 +76,7 @@ public class CircuitoDAO implements Map<String,Circuito>{
         try (ResultSet rsa = stm.executeQuery("SELECT * FROM segmentos WHERE nomecircuito='"+key+"'")) {
             while (rsa.next()) {
                 SegmentoDePista seg = new SegmentoDePista(rsa.getInt("gdu"), rsa.getFloat("distancia"), Enum.valueOf(TipoSegmento.class, rsa.getString("TipoSegmento")));
-                r.add(rsa.getInt("Indice"), seg);
+                r.add(seg);
             }
         }
         return r;
@@ -88,7 +88,7 @@ public class CircuitoDAO implements Map<String,Circuito>{
         Circuito t = null;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
-             ResultSet rs = stm.executeQuery("SELECT * FROM circuitos WHERE Nome='"+key+"'")) {
+             ResultSet rs = stm.executeQuery("SELECT * FROM circuitos WHERE nome='"+key+"'")) {
             if (rs.next()) {  // A chave existe na tabela
                 // Reconstruir a os segmentos de pista
                 ArrayList<SegmentoDePista> segmentos = getSegmentosCircuito(key.toString(), stm);
@@ -109,7 +109,7 @@ public class CircuitoDAO implements Map<String,Circuito>{
     @Override
     public Circuito put(String key, Circuito value) {
         Circuito res;
-        ArrayList<SegmentoDePista> s = value.getSegmentosdepista();
+        List<SegmentoDePista> s = value.getSegmentosdepista();
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
 
@@ -122,12 +122,12 @@ public class CircuitoDAO implements Map<String,Circuito>{
 
             // Actualizar os segmentos do circuito
             //Eliminar segmentos cujo nome do circuito corresponde
-            stm.executeUpdate("DELETE FROM segmentos WHERE NomeCircuito='"+key+"'");
+            stm.executeUpdate("DELETE FROM segmentos WHERE nomecircuito='"+key+"'");
             //Adicionar segmentos
             for (int i=0; i<s.size();i++){
                 SegmentoDePista seg = s.get(i);
-                stm.executeUpdate("INSERT INTO segmentos " +
-                        "VALUES ("+ (i-1)+ ", '"+
+                stm.executeUpdate("INSERT INTO segmentos (gdu,distancia,nome,nomecircuito)" +
+                        "VALUES ('"+
                         seg.getGdu()+"', '"+
                         seg.getDistancia()+"', '"+
                         seg.getNome()+"', '"+
@@ -205,7 +205,7 @@ public class CircuitoDAO implements Map<String,Circuito>{
         Collection<Circuito> res = new HashSet<>();
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
-             ResultSet rs = stm.executeQuery("SELECT Nome FROM circuitos")) {
+             ResultSet rs = stm.executeQuery("SELECT nome FROM circuitos")) {
             while (rs.next()) {
                 String idc = rs.getString("nome");
                 Circuito c = this.get(idc);
