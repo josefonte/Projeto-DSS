@@ -1,5 +1,8 @@
+package ui;
+import business.*;
 
-packege ui;
+import business.Model;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,10 +12,7 @@ public class TextUI  {
     //
     // aceManager
 
-    private List<String> carros = new ArrayList<>();
-    private List<String> pilotos = new ArrayList<>();
-    private List<String> circuitos = new ArrayList<>();
-    private List<String> campeonatos = new ArrayList<>();
+    private Model model;
     private Menu menu;
     private  boolean Admin;
     private Scanner is;
@@ -20,18 +20,7 @@ public class TextUI  {
     public TextUI() {
         // Criar o menu
 
-        for (int i=0; i<20; i++){
-            campeonatos.add("campeonato"+i);
-        }
-        for (int i=0; i<20; i++){
-            circuitos.add("circuito"+i);
-        }
-        for (int i=0; i<20; i++){
-            pilotos.add("Piloto"+i);
-        }
-        for (int i=0; i<20; i++){
-            carros.add("Carros"+i);
-        }
+        this.model = new Model();
 
         this.menu = new Menu(new String[]{
                 "Modo Admin",
@@ -193,10 +182,7 @@ public class TextUI  {
     public void ListaCampeonatos(){
         try {
             System.out.println("\n# Lista de Campeonatos #");
-            for (String campeonato : campeonatos){
-                System.out.println(campeonato);
-            }
-            //model.getCarros()
+            for (String camp : model.infoCampeonatos(false)) System.out.println(camp);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -204,15 +190,27 @@ public class TextUI  {
 
     }
 
+    public void InfoCampeonato(){
+        try {
+            ListaCampeonatos();
+            System.out.print("Campeonato em Detalhe: ");
+            String nome = is.nextLine();
+            System.out.println(model.getCampeonato(nome));
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void AdicionarCampeonato(){
         try {
             is = new Scanner(System.in);
-            System.out.println("Nome do Campeonato: ");
+            System.out.print("Nome do Campeonato: ");
             String nome = is.nextLine();
 
             //construtor de circuito Circuito circuito = new Circuito(nome,dist);
             //model.circuitos.add(circuito)
-            campeonatos.add(nome);
+            //campeonatos.add(nome);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -222,10 +220,10 @@ public class TextUI  {
     public void RemoverCampeonato(){
         try {
             ListaCircuitos();
-            System.out.println("Nome do Campeonato a Remover:");
+            System.out.print("Nome do Campeonato a Remover:");
             is = new Scanner(System.in);
             String nome = is.nextLine();
-            circuitos.remove(nome);
+           // model..remove();
 
             //model.removeCarro
         }
@@ -234,34 +232,48 @@ public class TextUI  {
         }
     }
 
-
-
     public void ListaCircuitos(){
         try {
-
             System.out.println("\n# Lista de Circuitos #");
-            for (String circuito : circuitos){
-                System.out.println(circuito);
-            }
-            //model.getCarros()
+            for (String camp : model.infoCampeonatos(false)) System.out.println(camp);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
 
+    public void InfoCircuito(){
+        try {
+                ListaCircuitos();
+                String nome = "";
+                while (!nome.equals("nao")){
+                    System.out.println("Circuito em Detalhe (escreva 'nao', caso não deseje): ");
+                    nome = is.nextLine();
+                    System.out.println(model.getCircuito(nome));
+                }
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
     }
 
     public void AdicionarCircuito(){
         try {
             is = new Scanner(System.in);
-            System.out.println("Nome do Circuito: ");
+            System.out.print("Nome do Circuito: ");
             String nome = is.nextLine();
-            System.out.println("Distância do Circuito: ");
-            Float dist = is.nextFloat();
 
-            //construtor de circuito Circuito circuito = new Circuito(nome,dist);
-            //model.circuitos.add(circuito)
-            circuitos.add(nome);
+            while(model.getCircuitos().containsKey(nome)){
+                System.out.println("Nome do Circuito já existe");
+                System.out.print("Nome do Circuito: ");
+                nome = is.nextLine();
+            }
+
+            System.out.print("Distância do Circuito: ");
+            float dist = is.nextFloat();
+
+            Circuito circuito = new Circuito(nome,dist);
+            model.addCircuito(circuito);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -271,12 +283,11 @@ public class TextUI  {
     public void RemoverCircuito(){
         try {
             ListaCircuitos();
-            System.out.println("Nome do Circuito a Remover:");
+            System.out.println("Nome do Circuito a Remover: ");
             is = new Scanner(System.in);
             String nome = is.nextLine();
-            circuitos.remove(nome);
+           // if (!model.removeCircuito(nome)) System.out.println("Circuito não Existe");
 
-            //model.removeCarro
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -285,12 +296,8 @@ public class TextUI  {
 
     public void ListaPilotos(){
         try {
-
             System.out.println("\n# Lista de Pilotos #");
-            for (String piloto : pilotos){
-                System.out.println(piloto);
-            }
-
+            for (String pil : model.infoPilotos(false)) System.out.println(pil);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -308,9 +315,9 @@ public class TextUI  {
             System.out.println("Ratio Tempo Chuvoso vs Tempo Seco (0-100): ");
             int cts = is.nextInt();
 
-            pilotos.add(nome);
-            // Piloto new =
-            //model.pilotos.addPiloto();
+
+            Piloto piloto = new Piloto(nome,sva,cts);
+            model.addPiloto(piloto);
 
         }
         catch (Exception e){
