@@ -20,8 +20,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
             stm.executeUpdate(campeonato);
             String circuito ="CREATE TABLE IF NOT EXISTS circuitos ("+
                     "nome varchar(45) NOT NULL PRIMARY KEY,"+
-                    "distancia float(10) NOT NULL, " +
-                    "volta int NOT NULL)";
+                    "distancia float(10) NOT NULL)";
             stm.executeUpdate(circuito);
             String corridas ="CREATE TABLE IF NOT EXISTS corridas ("+
                     "id INT NOT NULL PRIMARY KEY, "+
@@ -32,7 +31,6 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
             stm.executeUpdate(corridas);
             String segmentos = "CREATE TABLE IF NOT EXISTS segmentos ("+
                     "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"+
-                    "indice INT NOT NULL,"+
                     "gdu INT NOT NULL,"+
                     "distancia float NOT NULL,"+
                     "nome VARCHAR(17) NOT NULL,"+

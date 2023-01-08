@@ -75,7 +75,7 @@ public class CircuitoDAO implements Map<String,Circuito>{
         // preencher com o conteúdo da base de dados
         try (ResultSet rsa = stm.executeQuery("SELECT * FROM segmentos WHERE nomecircuito='"+key+"'")) {
             while (rsa.next()) {
-                SegmentoDePista seg = new SegmentoDePista(rsa.getInt("gdu"), rsa.getFloat("distancia"), Enum.valueOf(TipoSegmento.class, rsa.getString("TipoSegmento")));
+                SegmentoDePista seg = new SegmentoDePista(rsa.getInt("gdu"), rsa.getFloat("distancia"), Enum.valueOf(TipoSegmento.class, rsa.getString("nome")));
                 r.add(seg);
             }
         }
@@ -115,9 +115,9 @@ public class CircuitoDAO implements Map<String,Circuito>{
 
             // Actualizar a circuito
             stm.executeUpdate(
-                    "INSERT INTO circuitos " +
-                            "VALUES ('"+ value.getNomeCircuito()+ "', "+
-                            value.getDistancia()+") "+
+                    "INSERT INTO circuitos (nome, distancia)" +
+                            "VALUES ('"+ value.getNomeCircuito()+ "', '"+
+                            value.getDistancia()+"') "+
                             "ON DUPLICATE KEY UPDATE distancia=Values(distancia)");
 
             // Actualizar os segmentos do circuito
@@ -126,12 +126,12 @@ public class CircuitoDAO implements Map<String,Circuito>{
             //Adicionar segmentos
             for (int i=0; i<s.size();i++){
                 SegmentoDePista seg = s.get(i);
-                stm.executeUpdate("INSERT INTO segmentos (gdu,distancia,nome,nomecircuito)" +
+                stm.executeUpdate("INSERT INTO segmentos (gdu, distancia, nome, nomecircuito)" +
                         "VALUES ('"+
                         seg.getGdu()+"', '"+
                         seg.getDistancia()+"', '"+
                         seg.getNome()+"', '"+
-                        value.getNomeCircuito()+") ");
+                        value.getNomeCircuito()+"') ");
             }
             res = get(key);
 
