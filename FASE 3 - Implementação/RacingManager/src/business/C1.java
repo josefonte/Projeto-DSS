@@ -44,13 +44,13 @@ public class C1 extends Carro {
         StringBuilder sb = new StringBuilder();
         sb.append("Carro C1:  ");
         sb.append("marca = "+ super.getMarca());
-        sb.append("/ modelo = " + super.getModelo());
-        sb.append("/ cilindrada=" + super.getCelindrada());
-        sb.append("/ potencia=" + super.getPotencia());
-        sb.append("/ fiabilidade=" + super.getFiabilidade());
-        sb.append("/ pac=" + super.getPac());
-        sb.append("/ id=" + super.getId());
-        sb.append("/ potencia hibrida= "+ getPotenciaHibrida());
+        sb.append(" | modelo = " + super.getModelo());
+        sb.append(" | cilindrada=" + super.getCelindrada());
+        sb.append(" | potencia=" + super.getPotencia());
+        sb.append(" | fiabilidade=" + super.getFiabilidade());
+        sb.append(" | pac=" + super.getPac());
+        sb.append(" | id=" + super.getId());
+        sb.append(" | potencia hibrida= "+ getPotenciaHibrida());
         return sb.toString();
     }
 }

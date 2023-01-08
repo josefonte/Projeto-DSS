@@ -51,8 +51,8 @@ public class SegmentoDePista {
         StringBuilder sb = new StringBuilder();
         sb.append("SegmentoDePista:  ");
         sb.append("nome='" + nome );
-        sb.append("/ gdu=" + gdu  );
-        sb.append("/ distancia=" + distancia);
+        sb.append(" | gdu=" + gdu  );
+        sb.append(" | distancia=" + distancia);
         return sb.toString();
     }
     public SegmentoDePista clone(){

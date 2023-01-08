@@ -139,17 +139,17 @@ public class Campeonato {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Campeonato:  ");
-        sb.append("/ nome= " + nomeCampeonato);
-        sb.append("/ corridaAtual=" + corridaAtual);
-        sb.append("/ corridas=" + corridas);
-        sb.append("/ campParticipantes=" + campParticipantes );
-        sb.append("/ tipoCampeonato=" + tipoCampeonato  );
+        sb.append(" nome= " + nomeCampeonato);
+        sb.append(" | corridaAtual=" + corridaAtual);
+        sb.append(" | corridas=" + corridas);
+        sb.append(" | campParticipantes=" + campParticipantes );
+        sb.append(" | tipoCampeonato=" + tipoCampeonato  );
         return sb.toString();
     }
     public String toSimpleString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Campeonato:  ");
-        sb.append("/ nome= " + nomeCampeonato);
+        sb.append(" | nome= " + nomeCampeonato);
         return sb.toString();
     }
     

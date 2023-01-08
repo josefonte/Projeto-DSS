@@ -51,15 +51,15 @@ public class Piloto {
         StringBuilder sb = new StringBuilder();
         sb.append("Piloto:  ");
         sb.append("nome=" + nome );
-        sb.append("/ sva=" + sva );
-        sb.append("/ cts=" + cts);
+        sb.append(" | sva=" + sva );
+        sb.append(" | cts=" + cts);
         return sb.toString();
     }
     
     public String toSimpleString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Piloto:  ");
-        sb.append("nome='" + nome );
+        sb.append(" nome='" + nome );
         return sb.toString();
     }
 

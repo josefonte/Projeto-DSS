@@ -86,8 +86,14 @@ public class TesteModel {
 
             Carro carro = new C2("bmw","A5",6000,1,2,4,"as",11);
             Carro carro1 = new C2("audi","A2",4000,1,2,4,"us",11);
-            carros.put("as",carro);
-            carros.put("us",carro1);
+            carro.setPneus(TipoPneus.MACIO);
+            carro.setMotor(ModoMotor.NORMAL);
+            carro1.setPneus(TipoPneus.MACIO);
+            carro1.setMotor(ModoMotor.NORMAL);
+            Carro car1 = carros.put("as",carro);
+            System.out.println(car1.toString());
+            Carro car2 =carros.put("us",carro1);
+            System.out.println(car2.toString());
             Carro carro2 = carros.get("as");
             Carro carro3 = carros.get("us");
             System.out.println(carro2.toString());
@@ -106,6 +112,7 @@ public class TesteModel {
             corri.add(cor);
 
             Campeonato camp = new Campeonato("Camp",3,corri,part,TipoCampeonato.C1);
+            System.out.println("AQUI");
             campeonatos.put("Camp",camp);
             Campeonato camp2 = campeonatos.get("Camp");
             System.out.println(camp2.toString());

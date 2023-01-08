@@ -97,16 +97,16 @@ public class Circuito {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Circuito:  ");
-        sb.append("/ distancia=" + distancia );
-        sb.append("/ nomeCircuito='" + nomeCircuito );
-        sb.append("/ segmentosdepista=" + segmentosdepista);
+        sb.append("  distancia=" + distancia );
+        sb.append(" | nomeCircuito='" + nomeCircuito );
+        sb.append(" | segmentosdepista=" + segmentosdepista);
         return sb.toString();
     }
     
     public String toSimpleString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Circuito:  ");
-        sb.append("/ nomeCircuito='" + nomeCircuito );
+        sb.append(" nomeCircuito='" + nomeCircuito );
         return sb.toString();
     }
 

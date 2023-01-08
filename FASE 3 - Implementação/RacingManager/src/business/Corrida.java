@@ -180,16 +180,16 @@ public class Corrida implements Serializable
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Corrida:  ");
-        sb.append("/ circuito=" + circuito);
-        sb.append("/ participantes=" + participantes);
-        sb.append("/ clima=" + clima );
-        sb.append("/ voltas=" + voltas  );
+        sb.append(" circuito=" + circuito);
+        sb.append(" | participantes=" + participantes);
+        sb.append(" | clima=" + clima );
+        sb.append(" | voltas=" + voltas  );
         return sb.toString();
     }
     public String toSimpleString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Corrida:  ");
-        sb.append("/ circuito=" + circuito);
+        sb.append(" circuito=" + circuito);
         return sb.toString();
     }
 

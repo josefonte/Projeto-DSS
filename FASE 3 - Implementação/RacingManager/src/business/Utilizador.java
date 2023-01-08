@@ -72,9 +72,9 @@ public class Utilizador {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Utilizador:  ");
-        sb.append("nomeUtilizador='" + nomeUtilizador);
-        sb.append("/ pontosRanking=" + pontosRanking);
-        sb.append(", tipoutiliador=" + tipoutiliador);
+        sb.append("nomeUtilizador= " + nomeUtilizador);
+        sb.append(" | pontosRanking= " + pontosRanking);
+        sb.append(" | tipoutiliador=" + tipoutiliador);
         return sb.toString();
     }
 

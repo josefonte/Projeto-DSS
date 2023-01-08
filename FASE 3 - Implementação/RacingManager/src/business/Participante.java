@@ -162,14 +162,14 @@ public class Participante{
         StringBuilder sb = new StringBuilder();
         sb.append("Participante:  ");
         sb.append("id=" + id );
-        sb.append("/ pontuacao=" + pontuacao);
-        sb.append("/ tempos=" + tempos);
-        sb.append("/ afinacoesRestantes=" + afinacoesRestantes);
-        sb.append("/ voltasTotais=" + voltasTotais);
-        sb.append("/ localizacaoPista=" + localizacaoPista );
-        sb.append("/ carro=" + carro);
-        sb.append("/ utilizador=" + utilizador );
-        sb.append("/ piloto=" + piloto);
+        sb.append(" | pontuacao=" + pontuacao);
+        sb.append(" | tempos=" + tempos);
+        sb.append(" | afinacoesRestantes=" + afinacoesRestantes);
+        sb.append(" | voltasTotais=" + voltasTotais);
+        sb.append(" | localizacaoPista=" + localizacaoPista );
+        sb.append(" | carro=" + carro);
+        sb.append(" | utilizador=" + utilizador );
+        sb.append(" | piloto=" + piloto);
         return sb.toString();
     }
 }

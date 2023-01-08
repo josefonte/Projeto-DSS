@@ -4,6 +4,8 @@ import business.*;
 import java.sql.*;
 import java.util.*;
 
+import static business.TipoPneus.CHUVA;
+
 public class CarroDAO implements Map<String, Carro> {
     private static CarroDAO singleton = null;
     private CarroDAO() {
@@ -18,8 +20,8 @@ public class CarroDAO implements Map<String, Carro> {
                     "potencia int NOT NULL," +
                     "fiabilidade float DEFAULT NULL," +
                     "pac int NOT NULL," +
-                    "TipoPneus varchar(8)," +//ENUM ('Duro','Macio','Chuva')
-                    "ModoMotor varchar(20)," + //ENUM('Conversador','Normal', 'Agressivo')," +
+                    "TipoPneus varchar(17)," +//ENUM ('Duro','Macio','Chuva')
+                    "ModoMotor varchar(17)," + //ENUM('Conversador','Normal', 'Agressivo')," +
                     "potenciaHibrido int DEFAULT NULL," +
                     "taxaDeteorizacao int DEFAULT NULL)";
             stm.executeUpdate(sql);
@@ -114,16 +116,16 @@ public class CarroDAO implements Map<String, Carro> {
                 String categoria = rs.getString("categoria");
                 switch (categoria) {
                     case "C1":
-                        c = new C1(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrida"));
+                        c = new C1(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrido"));
                         break;
                     case "C2":
-                        c = new C2(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrida"));
+                        c = new C2(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrido"));
                         break;
                     case "SC":
                         c = new SC(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"));
                         break;
                     case "GT":
-                        c = new GT(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrida"), rs.getInt("taxadeteorizacao"));
+                        c = new GT(rs.getString("marca"), rs.getString("modelo"), rs.getInt("celindrada"),rs.getInt("potencia"),rs.getFloat("fiabilidade"),rs.getInt("pac"),rs.getString("id"),rs.getInt("potenciaHibrido"), rs.getInt("taxadeteorizacao"));
                         break;
                     default:
                         break;
@@ -148,15 +150,34 @@ public class CarroDAO implements Map<String, Carro> {
             String modelo = carro.getModelo();
             String marca = carro.getMarca();
             int cilindradaint = carro.getCelindrada();
-            String cilindrada = Integer.toString(cilindradaint);
+            String celindrada = Integer.toString(cilindradaint);
             String potencia = Integer.toString(carro.getPotencia());
             String fiabilidade = Float.toString(carro.getFiabilidade());
             String pac = Integer.toString(carro.getPac());
-            String tipoPneus = carro.getPneus().toString();
-            String modoMotor = carro.getMotor().toString();
+            TipoPneus tipoPneusT = carro.getPneus();
+            String tipoPneusS = "";
+            switch (tipoPneusT.toString()){
+                case("CHUVA"):
+                    tipoPneusS="CHUVA";
+                    break;
+                case("DURO"):
+                    tipoPneusS="DURO";
+                    break;
+                case("MACIO"):
+                    tipoPneusS="MACIO";
+                    break;
+                default:
+                    tipoPneusS="MACIO";
+                    break;
+            }
+            String tipoPneus=tipoPneusT.name();
+
+            ModoMotor modoMotorM = carro.getMotor();
+            String modoMotor = modoMotorM.name();
             // Actualizar a Sala
-            String potenciaHibrida = null;
-            String taxaDeteorizacao = null;
+            String potenciaHibrida = "0";
+            String taxaDeteorizacao = "0";
+
             switch(categoria){
                 case "C1":
                     potenciaHibrida = Integer.toString(((C1) carro).getPotenciaHibrida());
@@ -173,24 +194,48 @@ public class CarroDAO implements Map<String, Carro> {
                 default:
                     break;
             }
+            String str = "INSERT INTO carros (id, categoria, modelo, marca, celindrada, potencia, fiabilidade, pac, TipoPneus, ModoMotor, potenciaHibrido, taxaDeteorizacao)" +
+                    "VALUES ('"+ s+ "', '"+
+                    categoria+"', '"+
+                    modelo+"', '"+
+                    marca+"', '"+
+                    celindrada+"', '"+
+                    potencia+"', '"+
+                    fiabilidade+"', '"+
+                    pac+"', '"+
+                    tipoPneus+"', '"+
+                    modoMotor+"', '"+
+                    potenciaHibrida+"', '"+
+                    taxaDeteorizacao +"')"+
+                    "ON DUPLICATE KEY UPDATE categoria=Values(categoria), " +
+                    "modelo = Values(modelo), "+
+                    "marca = Values(marca), "+
+                    "celindrada = Values(celindrada), "+
+                    "potencia = Values(potencia), "+
+                    "fiabilidade = Values(fiabilidade), "+
+                    "pac = Values(pac), "+
+                    "TipoPneus = Values(TipoPneus), "+
+                    "ModoMotor = Values(ModoMotor), "+
+                    "potenciaHibrido = Values(potenciaHibrido), "+
+                    "taxaDeteorizacao = Values(taxaDeteorizacao)";
             stm.executeUpdate(
-                    "INSERT INTO carros (id, categoria, modelo, marca, cilindrada, potencia, fiabilidade, pac, TipoPneus, ModoMotor, potenciaHibrido, taxaDeteorizacao)" +
+                    "INSERT INTO carros (id, categoria, modelo, marca, celindrada, potencia, fiabilidade, pac, TipoPneus, ModoMotor, potenciaHibrido, taxaDeteorizacao)" +
                             "VALUES ('"+ s+ "', '"+
                             categoria+"', '"+
                             modelo+"', '"+
                             marca+"', '"+
-                            cilindrada+"', '"+
+                            celindrada+"', '"+
                             potencia+"', '"+
                             fiabilidade+"', '"+
                             pac+"', '"+
                             tipoPneus+"', '"+
                             modoMotor+"', '"+
                             potenciaHibrida+"', '"+
-                            taxaDeteorizacao+"')"+
+                            taxaDeteorizacao +"')"+
                             "ON DUPLICATE KEY UPDATE categoria=Values(categoria), " +
                             "modelo = Values(modelo), "+
                             "marca = Values(marca), "+
-                            "cilindrada = Values(cilindrada), "+
+                            "celindrada = Values(celindrada), "+
                             "potencia = Values(potencia), "+
                             "fiabilidade = Values(fiabilidade), "+
                             "pac = Values(pac), "+
@@ -199,14 +244,12 @@ public class CarroDAO implements Map<String, Carro> {
                             "potenciaHibrido = Values(potenciaHibrido), "+
                             "taxaDeteorizacao = Values(taxaDeteorizacao)");
 
-
-            res = get(s);
+            return get(s);
         } catch (SQLException e) {
             // Database error!
             e.printStackTrace();
             throw new NullPointerException(e.getMessage());
         }
-        return res;
     }
 
     @Override

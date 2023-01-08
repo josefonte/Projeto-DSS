@@ -42,7 +42,7 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                     "categoria varchar(10) NOT NULL,"+
                     "modelo varchar(45) NOT NULL," +
                     "marca varchar(45) NOT NULL,"+
-                    "cilindrada INT NOT NULL," +
+                    "celindrada INT NOT NULL," +
                     "potencia INT NOT NULL," +
                     "fiabilidade FLOAT DEFAULT NULL," +
                     "pac INT NOT NULL," +
@@ -282,13 +282,17 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
              Statement stm = conn.createStatement()) {
             stm.executeUpdate(
                     "INSERT INTO campeonatos " +
-                            "VALUES ('"+ campeonato.getNomeCampeonato()+ "', "+
-                            campeonato.getCorridaAtual()+") "+
-                            "ON DUPLICATE KEY UPDATE corridaAtual = values(corridaAtual) "+
-                            "ON DUPLICATE KEY UPDATE categoria = Values(categoria) "
+                            "VALUES ('"+ campeonato.getNomeCampeonato()+ "', '"+
+                            campeonato.getCorridaAtual()+"', '"+
+                            campeonato.getTipoCampeonato()+"') "+
+                            "ON DUPLICATE KEY UPDATE corridaAtual = values(corridaAtual),"+
+                            "categoria = Values(categoria) "
             );
+            int j=0;
             for(Corrida key : c) {
-                stm.executeUpdate("DELETE FROM corridas WHERE id='" + key + "'");
+                stm.executeUpdate("DELETE FROM corridas WHERE id='" + j + "'");
+                //key.getCircuito().getNomeCircuito() ?
+                j++;
             }
             for (int i=0; i<c.size();i++){
                 Corrida corrida = c.get(i);
