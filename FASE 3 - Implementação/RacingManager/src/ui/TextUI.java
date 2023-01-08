@@ -6,10 +6,7 @@ import business.Model;
 import java.util.*;
 
 public class TextUI  {
-    // O model tem a 'lógica de negócio'.
-    //private FacadeR
-    //
-    // aceManager
+    
 
     private Model model;
     private Menu menu;
@@ -17,8 +14,7 @@ public class TextUI  {
     private Scanner is;
 
     public TextUI() {
-        // Criar o menu
-
+        
         this.model = new Model();
 
         this.menu = new Menu(new String[]{
