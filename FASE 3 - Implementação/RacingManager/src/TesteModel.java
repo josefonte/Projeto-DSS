@@ -5,10 +5,11 @@ import data.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.time.LocalTime;
 import java.util.*;
 
 public class TesteModel {
-    public Map<String,Campeonato> campeonatos;
+    public static Map<String,Campeonato> campeonatos;
     public static Map<String,Carro> carros;
     public static Map<String,Circuito> circuitos;
     public static Map<String,Piloto> pilotos;
@@ -75,14 +76,39 @@ public class TesteModel {
             System.out.println(c4.toString());
 
             Utilizador u1 = new Utilizador("Ze",TipoUtilizador.JOGADOR,15);
+            Utilizador u2 = new Utilizador("Rafa",TipoUtilizador.JOGADOR,24);
             utilizadores.put("Ze",u1);
-            Utilizador u2 = utilizadores.get("Ze");
-            System.out.println(u2.toString());
-            Carro c = new C2("bmw","A5",6000,1,2,4,"as",11);
-            carros.put("as",c);
+            utilizadores.put("Rafa",u2);
+            Utilizador u3 = utilizadores.get("Ze");
+            Utilizador u4 = utilizadores.get("Rafa");
+            System.out.println(u3.toString());
+            System.out.println(u4.toString());
 
-            Carro carro1 = carros.get("as");
-            System.out.println(carro1.toString());
+            Carro carro = new C2("bmw","A5",6000,1,2,4,"as",11);
+            Carro carro1 = new C2("audi","A2",4000,1,2,4,"us",11);
+            carros.put("as",carro);
+            carros.put("us",carro1);
+            Carro carro2 = carros.get("as");
+            Carro carro3 = carros.get("us");
+            System.out.println(carro2.toString());
+            System.out.println(carro3.toString());
+
+            List<LocalTime> tempos =new ArrayList<LocalTime>();
+
+            Participante par = new Participante(1,12,tempos,3,5,7,carro,u1,p1);
+            Participante par2 = new Participante(2,12,tempos,3,5,7,carro1,u2,p1);
+            Map <String, Participante> part = new HashMap<>();
+            part.put("1",par);
+            part.put("2",par2);
+
+            Corrida cor = new Corrida(c1,part,4,2);
+            List<Corrida> corri = new ArrayList<Corrida>();
+            corri.add(cor);
+
+            Campeonato camp = new Campeonato("Camp",3,corri,part,TipoCampeonato.C1);
+            campeonatos.put("Camp",camp);
+            Campeonato camp2 = campeonatos.get("Camp");
+            System.out.println(camp2.toString());
 
 
 
