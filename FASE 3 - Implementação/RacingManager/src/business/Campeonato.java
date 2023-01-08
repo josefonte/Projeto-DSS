@@ -95,6 +95,15 @@ public class Campeonato {
     public void addParticipante(Participante participante){
         this.campParticipantes.put(participante.getNome(),participante.clone());
     }
+    
+    public void addParticipantes2Corridas(Map<String,Participante> participantes) {
+        List<Corrida> corridasP = new ArrayList<>();
+        for(Corrida cor : this.corridas){
+            cor.setParticipantes(participantes);
+            corridasP.add(cor.clone());
+        }
+        this.corridas = new ArrayList<>(corridasP);
+    }
 
     private void addPontuacaoCampeonato(Corrida corrida){
         List<Participante> pList = corrida.listaClacificacao();
