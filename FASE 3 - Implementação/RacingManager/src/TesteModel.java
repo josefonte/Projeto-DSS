@@ -9,10 +9,10 @@ import java.util.*;
 
 public class TesteModel {
     //public Map<String,Campeonato> campeonatos;
-    //public Map<String,Carro> carros;
+    public static Map<String,Carro> carros;
     public static Map<String,Circuito> circuitos;
     public static Map<String,Piloto> pilotos;
-    //public Map<String,Utilizador> utilizadores;
+    public static Map<String,Utilizador> utilizadores;
     //public int contadorParticipante;
 
     public TesteModel(){
@@ -73,6 +73,17 @@ public class TesteModel {
 
             Circuito c4 = circuitos.get("Industrial");
             System.out.println(c4.toString());
+
+            Utilizador u1 = new Utilizador("Ze",TipoUtilizador.JOGADOR,15);
+            utilizadores.put("Ze",u1);
+            Utilizador u2 = utilizadores.get("Ze");
+            System.out.println(u2.toString());
+            Carro c = new C2("bmw","A5",6000,1,2,4,"as",11);
+            carros.put("as",c);
+
+            Carro carro1 = carros.get("as");
+            System.out.println(carro1.toString());
+
 
 
         } catch (Exception e) {

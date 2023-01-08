@@ -18,8 +18,8 @@ public class CarroDAO implements Map<String, Carro> {
                     "potencia int NOT NULL," +
                     "fiabilidade float DEFAULT NULL," +
                     "pac int NOT NULL," +
-                    "TipoPneus ENUM ('Duro','Macio','Chuva')," +
-                    "ModoMotor ENUM('Conversador','Normal', 'Agressivo')," +
+                    "TipoPneus varchar(8)," +//ENUM ('Duro','Macio','Chuva')
+                    "ModoMotor varchar(20)," + //ENUM('Conversador','Normal', 'Agressivo')," +
                     "potenciaHibrido int DEFAULT NULL," +
                     "taxaDeteorizacao int DEFAULT NULL)";
             stm.executeUpdate(sql);
@@ -86,7 +86,7 @@ public class CarroDAO implements Map<String, Carro> {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
              ResultSet rs =
-                     stm.executeQuery("SELECT Id FROM carros WHERE id='"+key.toString()+"'")) {
+                     stm.executeQuery("SELECT id FROM carros WHERE id='"+key.toString()+"'")) {
             r = rs.next();
         } catch (SQLException e) {
             // Database error!
