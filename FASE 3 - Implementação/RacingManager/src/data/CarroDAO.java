@@ -190,13 +190,13 @@ public class CarroDAO implements Map<String, Carro> {
                             "ON DUPLICATE KEY UPDATE categoria=Values(categoria), " +
                             "modelo = Values(modelo), "+
                             "marca = Values(marca), "+
-                            "cilindrada = Values(cilindrada)"+
-                            "potencia = Values(potencia)"+
-                            "fiabilidade = Values(fiabilidade)"+
-                            "pac = Values(pac)"+
-                            "TipoPneus = Values(TipoPneus)"+
-                            "ModoMotor = Values(ModoMotor)"+
-                            "potenciaHibrido = Values(potenciaHibrido)"+
+                            "cilindrada = Values(cilindrada), "+
+                            "potencia = Values(potencia), "+
+                            "fiabilidade = Values(fiabilidade), "+
+                            "pac = Values(pac), "+
+                            "TipoPneus = Values(TipoPneus), "+
+                            "ModoMotor = Values(ModoMotor), "+
+                            "potenciaHibrido = Values(potenciaHibrido), "+
                             "taxaDeteorizacao = Values(taxaDeteorizacao)");
 
 
