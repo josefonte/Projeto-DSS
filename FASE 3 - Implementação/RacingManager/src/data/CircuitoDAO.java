@@ -54,7 +54,7 @@ public class CircuitoDAO implements Map<String,Circuito>{
         boolean r;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
-             ResultSet rs = stm.executeQuery("SELECT Nome FROM circuitos WHERE Nome='"+key.toString()+"'")) {
+             ResultSet rs = stm.executeQuery("SELECT nome FROM circuitos WHERE nome='"+key.toString()+"'")) {
             r = rs.next();
         } catch (SQLException e) {
             // Database error!
