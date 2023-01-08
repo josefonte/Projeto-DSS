@@ -122,7 +122,9 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
                     "INSERT INTO utilizadores (nomeUtilizador, pontosRanking, tipoUtilizador)" +
                             "VALUES ('"+ utilizador.getNomeUtilizador()+ "', '"+
                             utilizador.getPontosRanking()+"', '"+
-                            utilizador.getTipoutiliador().toString()+"') ");
+                            utilizador.getTipoutiliador().toString()+"')" +
+                            "ON DUPLICATE KEY UPDATE pontosRanking = Values(pontosRanking),"+
+                            "tipoUtilizador = Values(tipoUtilizador)");
             res = get(s);
         } catch (SQLException e) {
             // Database error!

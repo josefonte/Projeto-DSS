@@ -42,12 +42,12 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                     "categoria varchar(10) NOT NULL,"+
                     "modelo varchar(45) NOT NULL," +
                     "marca varchar(45) NOT NULL,"+
-                    "celindrada INT NOT NULL," +
+                    "cilindrada INT NOT NULL," +
                     "potencia INT NOT NULL," +
                     "fiabilidade FLOAT DEFAULT NULL," +
                     "pac INT NOT NULL," +
-                    "TipoPneus VARCHAR(17) NOT NULL ," +
-                    "ModoMotor VARCHAR(17) NOT NULL," +
+                    "TipoPneus VARCHAR(17) DEFAULT NULL ," +
+                    "ModoMotor VARCHAR(17) DEFAULT NULL," +
                     "potenciaHibrido INT DEFAULT NULL," +
                     "taxaDeteorizacao INT DEFAULT NULL)";
             stm.executeUpdate(carros);

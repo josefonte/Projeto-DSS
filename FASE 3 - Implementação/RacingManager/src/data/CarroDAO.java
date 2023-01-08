@@ -174,7 +174,7 @@ public class CarroDAO implements Map<String, Carro> {
                     break;
             }
             stm.executeUpdate(
-                    "INSERT INTO carros " +
+                    "INSERT INTO carros (id, categoria, modelo, marca, cilindrada, potencia, fiabilidade, pac, TipoPneus, ModoMotor, potenciaHibrido, taxaDeteorizacao)" +
                             "VALUES ('"+ s+ "', '"+
                             categoria+"', '"+
                             modelo+"', '"+
@@ -186,18 +186,18 @@ public class CarroDAO implements Map<String, Carro> {
                             tipoPneus+"', '"+
                             modoMotor+"', '"+
                             potenciaHibrida+"', '"+
-                            taxaDeteorizacao+"', '"+
+                            taxaDeteorizacao+"')"+
                             "ON DUPLICATE KEY UPDATE categoria=Values(categoria), " +
-                            "modelo=Values(modelo), "+
-                            "marca=Values(marca), "+
-                            "cilindrada=Values(cilindrada)"+
-                            "potencia=Values(potencia)"+
-                            "fiabilidade=Values(fiabilidade)"+
-                            "pac=Values(pac)"+
-                            "TipoPneus=Values(TipoPneus)"+
-                            "ModoMotor=Values(ModoMotor)"+
-                            "potenciaHibrida=Values(potenciaHibrida)"+
-                            "taxaDeteorizacao=Values(taxaDeteorizacao)");
+                            "modelo = Values(modelo), "+
+                            "marca = Values(marca), "+
+                            "cilindrada = Values(cilindrada)"+
+                            "potencia = Values(potencia)"+
+                            "fiabilidade = Values(fiabilidade)"+
+                            "pac = Values(pac)"+
+                            "TipoPneus = Values(TipoPneus)"+
+                            "ModoMotor = Values(ModoMotor)"+
+                            "potenciaHibrido = Values(potenciaHibrido)"+
+                            "taxaDeteorizacao = Values(taxaDeteorizacao)");
 
 
             res = get(s);
@@ -216,7 +216,7 @@ public class CarroDAO implements Map<String, Carro> {
              Statement stm = conn.createStatement()) {
             // apagar a turma
             stm.executeUpdate("DELETE FROM carros WHERE id='" + c.getId() + "'");
-            stm.executeUpdate("DELETE FROM participantes WHERE idCarro='"+c.getId()+"'");
+            stm.executeUpdate("DELETE FROM participantes WHERE carro_id='"+c.getId()+"'");
 
 
         }catch (Exception e) {
@@ -236,7 +236,7 @@ public class CarroDAO implements Map<String, Carro> {
     public void clear() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
-            for(Carro c: this.values()) stm.executeUpdate("TRUNCATE participantes WHERE idCarro='"+c.getId()+"'");
+            for(Carro c: this.values()) stm.executeUpdate("TRUNCATE participantes WHERE carro_id='"+c.getId()+"'");
             stm.executeUpdate("TRUNCATE carros");
         } catch (SQLException e) {
             // Database error!
