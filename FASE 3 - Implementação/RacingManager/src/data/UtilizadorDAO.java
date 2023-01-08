@@ -119,10 +119,10 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
              Statement stm = conn.createStatement()) {
 
             stm.executeUpdate(
-                    "INSERT INTO utilizadores " +
+                    "INSERT INTO utilizadores (nomeUtilizador, pontosRanking, tipoUtilizador)" +
                             "VALUES ('"+ utilizador.getNomeUtilizador()+ "', '"+
-                            utilizador.getPontosRanking()+"', "+
-                            utilizador.getTipoutiliador()+") ");
+                            utilizador.getPontosRanking()+"', '"+
+                            utilizador.getTipoutiliador().toString()+"') ");
             res = get(s);
         } catch (SQLException e) {
             // Database error!

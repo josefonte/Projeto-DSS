@@ -8,19 +8,19 @@ import java.sql.DriverManager;
 import java.util.*;
 
 public class TesteModel {
-    //public Map<String,Campeonato> campeonatos;
+    public Map<String,Campeonato> campeonatos;
     public static Map<String,Carro> carros;
     public static Map<String,Circuito> circuitos;
     public static Map<String,Piloto> pilotos;
     public static Map<String,Utilizador> utilizadores;
-    //public int contadorParticipante;
+    public int contadorParticipante;
 
     public TesteModel(){
-        //campeonatos = CampeonatoDAO.getInstance();
-        //carros = CarroDAO.getInstance();
+        campeonatos = CampeonatoDAO.getInstance();
+        carros = CarroDAO.getInstance();
         circuitos = CircuitoDAO.getInstance();
         pilotos = PilotoDAO.getInstance();
-        //utilizadores = UtilizadorDAO.getInstance();
+        utilizadores = UtilizadorDAO.getInstance();
         //contadorParticipante = 0;
     }
     public static void main(String[] args) {
