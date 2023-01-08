@@ -145,10 +145,11 @@ public class TextUI  {
         int afinacoesTotais = (int)((campeonato.getCorridas().size()*2)/3);
         aux = is.nextLine();
 
-            int bot=0;
+        int bot=0;
+
+        Map<String,Participante> parts = new HashMap<>();
         while(true){
             System.out.println("# Adicionar Participante # ");
-
 
             Participante part = new Participante();
             part.setTempos(new ArrayList<>());
@@ -162,6 +163,7 @@ public class TextUI  {
                 part.setPiloto(model.getPilotos().values().stream().toList().get(0));
                 part.setCarro(model.getCarros().values().stream().toList().get(0));
                 part.setUtilizador(new Utilizador("BOT"+ bot, TipoUtilizador.BOT));
+                parts.put(part.getNome(),part);
                 campeonato.addParticipante(part);
             }else {
                 String car_nome, piloto_nome;
@@ -186,31 +188,28 @@ public class TextUI  {
                     System.out.print("Nome do Convidado: ");
                     String nome = is.nextLine();
                     part.setUtilizador(new Utilizador(nome, TipoUtilizador.CONVIDADO));
+                    parts.put(part.getNome(),part);
                     campeonato.addParticipante(part);
                 }
                 else if (tipo.equals("Jogador") || tipo.equals("jogador")){
                     System.out.print("Nome do Jogador: ");
                     String nome = is.nextLine();
                     part.setUtilizador(new Utilizador(nome , TipoUtilizador.JOGADOR));
+                    parts.put(part.getNome(),part);
                     campeonato.addParticipante(part);
                 }
             }
-
         }
 
-        for(int i = 0; i<campeonato.getCorridas().size(); i++){
+        campeonato.addParticipantes2Corridas(parts);
+
+        for(Corrida corrida : campeonato.getCorridas()){
+            System.out.println("Pretende Simular a Corrida - " + corrida.getCircuito().getNomeCircuito());
             campeonato.simularCorrida();
-            List<Participante> list= campeonato.proximacorrida().listaClacificacao();
-
-            //PRint (ao longo do tempo)
-
-            //PRint resultado
-
+            System.out.println("# Tempos da Corrida" + corrida.listaClacificacao());
         }
         List<Participante> resultadoCampeonato = campeonato.classificacaoFinal();
-        // print
-
-
+        System.out.println("RESULTADOS FINAIS" + resultadoCampeonato);
     }
 
     public boolean ListaCampeonatos(){
@@ -237,30 +236,32 @@ public class TextUI  {
 
     public void AdicionarCampeonato(){
 
-            is = new Scanner(System.in);
-            System.out.print("Nome do Campeonato: ");
-            String nome = is.nextLine();
+        is = new Scanner(System.in);
+        System.out.print("Nome do Campeonato: ");
+        String nome = is.nextLine();
+        Campeonato campeonato = new Campeonato();
 
-            while(model.getCampeonatos().containsKey(nome)){
+        while(model.getCampeonatos().containsKey(nome)){
                 System.out.println("Nome do Campeonato já existe");
                 System.out.print("Nome do Campeonato: ");
                 nome = is.nextLine();
-            }
+        }
 
-            System.out.print("Categoria (C1-C2-GT-SC): ");
-            String cat = is.nextLine();
+        campeonato.setNomeCampeonato(nome);
 
-            TipoCampeonato categoria = switch (cat) {
+        System.out.print("Categoria (C1-C2-GT-SC): ");
+        String cat = is.nextLine();
+
+        TipoCampeonato categoria = switch (cat) {
                 case "C1", "c1" -> TipoCampeonato.C1;
                 case "C2", "c2" -> TipoCampeonato.C2;
                 case "GT", "gt" ->  TipoCampeonato.GT;
                 case "SC","sc"->  TipoCampeonato.SC;
                 default -> TipoCampeonato.C1;
-            };
-            Campeonato campeonato = new Campeonato();
-            int escolha = 0;
+        };
+        int escolha = 0;
 
-            do{
+        do{
                 Map<String,Participante> parts = new HashMap<>();
                 System.out.println("## Adicionar Corridas ##");
 
@@ -288,6 +289,7 @@ public class TextUI  {
                 int voltas = is.nextInt();
 
                 Corrida corrida = new Corrida(circuito,parts,clima,voltas);
+                campeonato.addCorrida(corrida);
 
                 System.out.print("Adicionar outro Circuito (1-Sim | 0-Não) : ");
                 escolha = is.nextInt();
@@ -545,7 +547,7 @@ public class TextUI  {
             int pac = i;
             is.nextLine();
 
-            System.out.println("Pneus (Macio-Duro-Chuva): ");
+            System.out.print("Pneus (Macio-Duro-Chuva): ");
             String p = is.nextLine();
 
             TipoPneus pneus = switch (p){//TipoPneus pneus = switch (p) {
@@ -555,7 +557,7 @@ public class TextUI  {
                 default -> TipoPneus.MACIO;
             };
 
-            System.out.println("Modo Motor (Conservador-Normal-Agressivo): ");
+            System.out.print("Modo Motor (Conservador-Normal-Agressivo): ");
             String mot = is.nextLine();
             ModoMotor motor = switch (mot) {//ModoMotor motor =
                 case "CONSERVADOR", "conservador", "Conservador" -> ModoMotor.CONSERVADOR;
