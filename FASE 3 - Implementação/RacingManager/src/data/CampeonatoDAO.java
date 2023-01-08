@@ -27,7 +27,9 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                     "clima INT NOT NULL, "+
                     "voltas INT NOT NULL, "+
                     "circuito varchar(45) NOT NULL,"+
-                    "FOREIGN KEY (circuito) REFERENCES circuitos(nome))";
+                    "ncampeonato varchar(16) NOT NULL,"+
+                    "FOREIGN KEY (circuito) REFERENCES circuitos(nome)"+
+                    "FOREIGN KEY (ncampeonato) REFERENCES campeonato(nome))";
             stm.executeUpdate(corridas);
             String segmentos = "CREATE TABLE IF NOT EXISTS segmentos ("+
                     "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"+
@@ -286,21 +288,23 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
                             campeonato.getCorridaAtual()+"', '"+
                             campeonato.getTipoCampeonato()+"') "+
                             "ON DUPLICATE KEY UPDATE corridaAtual = values(corridaAtual),"+
-                            "categoria = Values(categoria) "
+                            "categoria = Values(categoria)"
             );
-            int j=0;
+            stm.executeUpdate("DELETE FROM corridas WHERE ncampeonato='"+s+"'");
+
             for(Corrida key : c) {
-                stm.executeUpdate("DELETE FROM corridas WHERE id='" + j + "'");
+
+                //stm.executeUpdate("DELETE FROM corridas WHERE id='" + j + "'");
                 //key.getCircuito().getNomeCircuito() ?
-                j++;
-            }
-            for (int i=0; i<c.size();i++){
-                Corrida corrida = c.get(i);
-                stm.executeUpdate("INSERT INTO corridas " +
-                        "VALUES ("+i+"', '"+
-                        corrida.getVoltas()+"', '"+
-                        corrida.getClima()+"', '"+
-                        corrida.getCircuito()+") ");
+                //j++;
+                for (int i=0; i<c.size();i++){
+                    Corrida corrida = c.get(i);
+                    stm.executeUpdate("INSERT INTO corridas " +
+                            "VALUES ("+i+"', '"+
+                            corrida.getClima()+"', '"+
+                            corrida.getVoltas()+"', '"+
+                            corrida.getCircuito()+") ");
+                }
             }
         } catch (SQLException e) {
             // Database error!
@@ -308,6 +312,18 @@ public class CampeonatoDAO implements Map<String , Campeonato> {
             throw new NullPointerException(e.getMessage());
         }
         return t;
+    }
+
+    private void putCorrida(String key,Corrida c, int index, Statement stm) throws SQLException{
+        Circuito circuito  = c.getCircuito();
+        stm.executeUpdate("INSERT INTO corridas (Indice,NomeCampeonato,Circuito) " +
+                "VALUES ("+ index+ ", '"+
+                key+"', '"+
+                circuito.getNomeCircuito()+
+                "') " +
+                "ON DUPLICATE KEY UPDATE Indice=Values(Indice), " +
+                " NomeCampeonato=Values(NomeCampeonato), " +
+                " Circuito=Values(Circuito)");
     }
 
     @Override
